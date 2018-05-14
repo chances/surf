@@ -38,6 +38,40 @@
         <e p="Surf.csproj" t="IncludeRecursive" />
       </e>
       <e p="Surf.sln" t="IncludeFlat" />
+      <e p="xavierHTML" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="DOM" t="Include">
+          <e p="Element.cs" t="Include" />
+          <e p="Node.cs" t="Include" />
+          <e p="TextNode.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.0" t="Include">
+              <e p="xavierHTML.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Parsers" t="Include">
+          <e p="HTML" t="Include">
+            <e p="HtmlParser.cs" t="Include" />
+            <e p="HtmlTokenizer.cs" t="Include" />
+            <e p="LineEnumarator.cs" t="Include" />
+            <e p="Tokens" t="Include">
+              <e p="Attribute.cs" t="Include" />
+              <e p="ConstantTokens.cs" t="Include" />
+              <e p="HtmlTokenList.cs" t="Include" />
+              <e p="Identifier.cs" t="Include" />
+              <e p="Tag.cs" t="Include" />
+              <e p="Text.cs" t="Include" />
+            </e>
+          </e>
+          <e p="ParserException.cs" t="Include" />
+          <e p="StringExtensions.cs" t="Include" />
+          <e p="Utils.cs" t="Include" />
+        </e>
+        <e p="xavierHTML.csproj" t="IncludeRecursive" />
+      </e>
     </e>
     <e p="$USER_HOME$/Library/Caches/Rider2018.1/resharper-host/local/Transient/ReSharperHost/v12/SolutionCaches/_Surf.-1277768682.00" t="ExcludeRecursive" />
   </component>
