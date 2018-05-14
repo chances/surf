@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Surf" t="IncludeRecursive">
+        <e p="AppDelegate.cs" t="Include" />
+        <e p="art.scnassets" t="Include">
+          <e p="ship.dae" t="Include" />
+          <e p="texture.png" t="Include" />
+        </e>
+        <e p="Assets.xcassets" t="Include">
+          <e p="AppIcon.appiconset" t="Include">
+            <e p="AppIcon-128.png" t="Include" />
+            <e p="AppIcon-128@2x.png" t="Include" />
+            <e p="AppIcon-16.png" t="Include" />
+            <e p="AppIcon-16@2x.png" t="Include" />
+            <e p="AppIcon-256.png" t="Include" />
+            <e p="AppIcon-256@2x.png" t="Include" />
+            <e p="AppIcon-32.png" t="Include" />
+            <e p="AppIcon-32@2x.png" t="Include" />
+            <e p="AppIcon-512.png" t="Include" />
+            <e p="AppIcon-512@2x.png" t="Include" />
+            <e p="Contents.json" t="Include" />
+          </e>
+          <e p="Contents.json" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Entitlements.plist" t="Include" />
+        <e p="GameView.cs" t="Include" />
+        <e p="GameViewController.cs" t="Include" />
+        <e p="GameViewController.designer.cs" t="Include" />
+        <e p="Info.plist" t="Include" />
+        <e p="Main.cs" t="Include" />
+        <e p="MainMenu.xib" t="Include" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="Resources" t="Include" />
+        <e p="Surf.csproj" t="IncludeRecursive" />
+      </e>
+      <e p="Surf.sln" t="IncludeFlat" />
+    </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.1/resharper-host/local/Transient/ReSharperHost/v12/SolutionCaches/_Surf.-1277768682.00" t="ExcludeRecursive" />
+  </component>
+</project>
