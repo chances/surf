@@ -16,7 +16,7 @@ namespace Surf
         public override void DidFinishLaunching(NSNotification notification)
         {
             // Insert code here to initialize your application
-            var document = HtmlParser.Parse("<html><head><style>body { background-color: gray; height:40px; column-span: 4forks; }</style></head><body>Hello, world!</body></html>");
+            var document = HtmlParser.Parse("<html><head><style>body { background-color: gray; height:40px; margin: 0 10em; }</style></head><body>Hello, world!</body></html>");
             Console.WriteLine($"# of stylesheets: {document.Stylesheets.Count()}");
         }
 

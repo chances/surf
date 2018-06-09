@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Sprache;
 using xavierHTML.CSS.Values;
 using xavierHTML.Parsers.CSS;
@@ -7,15 +8,15 @@ namespace xavierHTML.CSS
 {
     public class Declaration
     {
-        public Declaration(string name, Value value, bool important = false)
+        public Declaration(string name, List<Value> values, bool important = false)
         {
             Name = name;
-            Value = value;
+            Values = values;
             Important = important;
         }
 
         public string Name { get; }
-        public Value Value { get; }
+        public List<Value> Values { get; }
         public bool Important { get; }
 
         public static Parser<Declaration> Parser =
@@ -23,13 +24,17 @@ namespace xavierHTML.CSS
             from name_ws in Tokens.Whitespace
             from colon in Parse.Char(':')
             from colon_ws in Tokens.Whitespace
-            from value in Value.Parse
-            from value_ws in Tokens.Whitespace
+            from values in Value.Parse.DelimitedBy(Tokens.Whitespace)
+            from value_ws in Tokens.Whitespace.Optional()
             from important in Parse.String("!important").Optional()
             from important_ws in Tokens.Whitespace
             from semicolon in Parse.Char(';')
-            select new Declaration(name, value, important.IsDefined);
-        
-        public override string ToString() => $"{Name}: {Value}";
+            select new Declaration(name, values.ToList(), important.IsDefined);
+
+        public override string ToString()
+        {
+            var values = Values.Aggregate("", (s, value) => $"{s} {value}");
+            return $"{Name}:{values}";
+        }
     }
 }
