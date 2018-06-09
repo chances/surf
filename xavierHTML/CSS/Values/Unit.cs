@@ -13,7 +13,8 @@ namespace xavierHTML.CSS.Values
 
         private static Unit[] Units =
         {
-            new Percentage(), new Ems(), new Points(), new Pixels(), new Degrees(), new Radians()
+            new Percentage(), new Ems(), new Rems(), new Points(),
+            new Pixels(), new Degrees(), new Radians()
         };
 
         public static readonly Parser<Unit> Parse =
@@ -58,6 +59,15 @@ namespace xavierHTML.CSS.Values
         {
             Notation = "em";
             Name = "Ems";
+        }
+    }
+    
+    public class Rems : Unit
+    {
+        public Rems()
+        {
+            Notation = "rem";
+            Name = "Rems";
         }
     }
 
