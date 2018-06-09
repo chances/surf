@@ -24,7 +24,7 @@ namespace xavierHTML.CSS
             from name_ws in Tokens.Whitespace
             from colon in Parse.Char(':')
             from colon_ws in Tokens.Whitespace
-            from values in Value.Parse.DelimitedBy(Tokens.Whitespace)
+            from values in Value.Parser.DelimitedBy(Tokens.Whitespace)
             from value_ws in Tokens.Whitespace.Optional()
             from important in Parse.String("!important").Optional()
             from important_ws in Tokens.Whitespace
