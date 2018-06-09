@@ -1,76 +1,99 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using Sprache;
+using xavierHTML.Parsers.CSS;
 
 namespace xavierHTML.CSS.Values
 {
-    public enum Unit
+    public abstract class Unit
     {
-        Unitless,
-        [Description("%")]
-        Percentage,
-        [Description("em")]
-        Em,
-        [Description("pt")]
-        Pt,
-        [Description("px")]
-        Px,
-        [Description("deg")]
-        Deg,
-        [Description("rad")]
-        Rad
+        public string Name { get; protected set; }
+        public string Notation { get; protected set; }
+
+        private static Unit[] Units =
+        {
+            new Percentage(), new Ems(), new Points(), new Pixels(), new Degrees(), new Radians()
+        };
+
+        public static readonly Parser<Unit> Parse =
+            Units.Select(u => Sprache.Parse.String(u.Notation).Text().Optional())
+                .Aggregate((unit1, unit2) => unit1.Or(unit2)) // OR together all the Unit subclasses
+                .Or(Tokens.Identifier.Optional()) // If none of those matched, eat the bad unit in the code
+                .Select(option =>
+                {
+                    if (!option.IsDefined) return new Unitless();
+                    var matchedUnit = Units.FirstOrDefault(unit => unit.Notation == option.Get());
+                    // TODO: Handle this case with better introspection?
+                    return matchedUnit ?? new Unitless();
+                });
+
+        public override string ToString()
+        {
+            return $"{Name} ({Notation})";
+        }
     }
 
-    public class Units
+    public class Unitless : Unit
     {
-        private static readonly Parser<Unit> Percentage =
-            from _ in Parse.String(GetDescription(Unit.Percentage))
-            select Unit.Percentage;
-
-        private static readonly Parser<Unit> Em =
-            from _ in Parse.String(GetDescription(Unit.Em))
-            select Unit.Em;
-
-        private static readonly Parser<Unit> Pt =
-            from _ in Parse.String(GetDescription(Unit.Pt))
-            select Unit.Pt;
-
-        private static readonly Parser<Unit> Px =
-            from _ in Parse.String(GetDescription(Unit.Px))
-            select Unit.Px;
-
-        private static readonly Parser<Unit> Deg =
-            from _ in Parse.String(GetDescription(Unit.Deg))
-            select Unit.Deg;
-
-        private static readonly Parser<Unit> Rad =
-            from _ in Parse.String(GetDescription(Unit.Rad))
-            select Unit.Rad;
-        
-        public static readonly Parser<Unit> Parser =
-            Percentage.Or(Em).Or(Pt).Or(Px).Or(Deg).Or(Rad).Or(
-                from _ in Parse.AnyChar.Preview()
-                select Unit.Unitless
-            );
-
-        private static string GetDescription(Unit obj)
+        public Unitless()
         {
-            try
-            {
-                var fieldInfo = 
-                    obj.GetType().GetField( obj.ToString() );
+            Notation = "";
+            Name = "Unitless";
+        }
+    }
 
-                var attribArray = fieldInfo.GetCustomAttributes( false );
+    public class Percentage : Unit
+    {
+        public Percentage()
+        {
+            Notation = "%";
+            Name = "Percentage";
+        }
+    }
 
-                if (attribArray.Length <= 0) return obj.ToString();
-                if( attribArray[0] is DescriptionAttribute attrib  )
-                    return attrib.Description;
-                return obj.ToString();
-            }
-            catch(Exception ex)
-            {
-                return "";
-            }
+    public class Ems : Unit
+    {
+        public Ems()
+        {
+            Notation = "em";
+            Name = "Ems";
+        }
+    }
+
+    public class Points : Unit
+    {
+        public Points()
+        {
+            Notation = "pt";
+            Name = "Points";
+        }
+    }
+
+    public class Pixels : Unit
+    {
+        public Pixels()
+        {
+            Notation = "px";
+            Name = "Pixels";
+        }
+    }
+
+    public class Degrees : Unit
+    {
+        public Degrees()
+        {
+            Notation = "deg";
+            Name = "Degrees";
+        }
+    }
+
+    public class Radians : Unit
+    {
+        public Radians()
+        {
+            Notation = "rad";
+            Name = "Radians";
         }
     }
 }

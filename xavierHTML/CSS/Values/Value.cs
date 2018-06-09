@@ -38,7 +38,7 @@ namespace xavierHTML.CSS.Values
 
         public static readonly Parser<Length> Parser =
             from value in _number
-            from unit in Units.Parser
+            from unit in Unit.Parse
             select new Length(value, unit);
     }
 
