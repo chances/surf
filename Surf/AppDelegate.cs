@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AppKit;
 using Foundation;
 using xavierHTML.Parsers.HTML;
@@ -15,8 +16,8 @@ namespace Surf
         public override void DidFinishLaunching(NSNotification notification)
         {
             // Insert code here to initialize your application
-            Console.WriteLine($"Document text content: {textContent}");
             var document = HtmlParser.Parse("<html><head><style>body { background-color: gray; height:40px; column-span: 4forks; }</style></head><body>Hello, world!</body></html>");
+            Console.WriteLine($"# of stylesheets: {document.Stylesheets.Count()}");
         }
 
         public override void WillTerminate(NSNotification notification)
