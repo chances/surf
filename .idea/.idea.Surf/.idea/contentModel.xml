@@ -32,7 +32,7 @@
         <e p="GameViewController.designer.cs" t="Include" />
         <e p="Info.plist" t="Include" />
         <e p="Main.cs" t="Include" />
-        <e p="MainMenu.xib" t="Include" />
+        <e p="MainWindow.xib" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Resources" t="Include" />

@@ -93,7 +93,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="MainMenu.xib" />
+    <InterfaceDefinition Include="MainWindow.xib" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\xavierHTML\xavierHTML.csproj">
