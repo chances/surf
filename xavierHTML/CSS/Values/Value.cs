@@ -1,4 +1,5 @@
-﻿using Sprache;
+﻿using System;
+using Sprache;
 using xavierHTML.Parsers.CSS;
 
 namespace xavierHTML.CSS.Values
@@ -20,6 +21,8 @@ namespace xavierHTML.CSS.Values
         public static readonly Parser<Keyword> Parser =
             from keyword in Tokens.Identifier
             select new Keyword(keyword);
+
+        public override string ToString() => Value;
     }
 
     public class Length : Value
@@ -40,6 +43,8 @@ namespace xavierHTML.CSS.Values
             from value in _number
             from unit in Unit.Parse
             select new Length(value, unit);
+
+        public override string ToString() => $"{Math.Round(Value, 5)}{Unit.Notation}";
     }
 
     public class ColorValue : Value

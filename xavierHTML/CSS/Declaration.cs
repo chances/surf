@@ -29,5 +29,7 @@ namespace xavierHTML.CSS
             from important_ws in Tokens.Whitespace
             from semicolon in Parse.Char(';')
             select new Declaration(name, value, important.IsDefined);
+        
+        public override string ToString() => $"{Name}: {Value}";
     }
 }
