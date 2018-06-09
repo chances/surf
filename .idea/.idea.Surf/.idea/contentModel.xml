@@ -41,6 +41,19 @@
       <e p="Surf.sln" t="IncludeFlat" />
       <e p="xavierHTML" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
+        <e p="CSS" t="Include">
+          <e p="Declaration.cs" t="Include" />
+          <e p="Rule.cs" t="Include" />
+          <e p="Selectors" t="Include">
+            <e p="Selector.cs" t="Include" />
+          </e>
+          <e p="Specificity.cs" t="Include" />
+          <e p="Stylesheet.cs" t="Include" />
+          <e p="Values" t="Include">
+            <e p="Unit.cs" t="Include" />
+            <e p="Value.cs" t="Include" />
+          </e>
+        </e>
         <e p="DOM" t="Include">
           <e p="Document.cs" t="Include" />
           <e p="Elements" t="Include">
@@ -62,6 +75,10 @@
           </e>
         </e>
         <e p="Parsers" t="Include">
+          <e p="CSS" t="Include">
+            <e p="CssParser.cs" t="Include" />
+            <e p="Tokens.cs" t="Include" />
+          </e>
           <e p="HTML" t="Include">
             <e p="HtmlNodeExtensions.cs" t="Include" />
             <e p="HtmlParser.cs" t="Include" />
