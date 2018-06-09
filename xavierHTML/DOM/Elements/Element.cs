@@ -32,6 +32,9 @@ namespace xavierHTML.DOM.Elements
         public string Id => Attributes.FirstOrDefault(pair => pair.Key == "id").Value;
         public string ClassName => Attributes.FirstOrDefault(pair => pair.Key == "class").Value;
 
+        // TODO: Implement inner text algorithm https://html.spec.whatwg.org/multipage/dom.html#dom-innertext
+        public string InnerText => TextContent;
+
         public List<string> ClassList
         {
             get
