@@ -49,5 +49,19 @@ namespace xavierHTML.DOM.Elements
         {
             return false;
         }
+
+        public IEnumerable<Element> GetElementsByTagName(string qualifiedName)
+        {
+            var children = Children.OfType<Element>().ToList();
+            
+            if (qualifiedName == "*")
+            {
+                return children;
+            }
+
+            var matchingElements = children.Where(e => e.TagName == qualifiedName);
+            var matchingChildren = children.SelectMany(element => element.GetElementsByTagName(qualifiedName));
+            return matchingElements.Concat(matchingChildren);
+        }
     }
 }
