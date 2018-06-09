@@ -13,5 +13,11 @@ namespace xavierHTML.Parsers
         {
             return (c >= '0' && c <= '9');
         }
+
+        public static bool IsHexDigit(char c)
+        {
+            var isAThroughF = (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+            return isAThroughF || IsArabicNumeral(c);
+        }
     }
 }

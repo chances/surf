@@ -10,7 +10,7 @@ namespace xavierHTML.CSS.Values
     public abstract class Value
     {
         public static readonly Parser<Value> Parser = Length.Parser.Or<Value>(String.Parser).Or(Keyword.Parser)
-            .Or(Function.Parser);
+            .Or(ColorValue.Parser).Or(Function.Parser);
     }
 
     public class Keyword : Value
@@ -102,6 +102,42 @@ namespace xavierHTML.CSS.Values
         }
 
         public Color Color { get; }
+
+        private static readonly Parser<char> _hexDigit = Parse.Char(Utils.IsHexDigit, "hex digit");
+
+        private static readonly Parser<Color> _3hexDigitsColor =
+            from hash in Parse.Char('#')
+            from r in _hexDigit
+            from g in _hexDigit
+            from b in _hexDigit
+            select new Color(Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
+
+        private static readonly Parser<Color> _6hexDigitsColor =
+            from hash in Parse.Char('#')
+            from hex in Parse.Repeat(_hexDigit, 6).Text()
+            select new Color(hex);
+
+        public static readonly Parser<ColorValue> Parser =
+            _3hexDigitsColor.Or(_6hexDigitsColor).Select(color => new ColorValue(color));
+
+        public override string ToString()
+        {
+            var alpha = Math.Round(Color.a / 255.0, 2);
+            return $"rgba({Color.r}, {Color.g}, {Color.b}, {alpha})";
+        }
+    }
+    
+    public static class DoubleExtensions
+    {
+        public static double Clamp (this double self, double min, double max)
+        {
+            return Math.Min (max, Math.Max (self, min));
+        }
+
+        public static int Round(this double self)
+        {
+            return (int) Math.Round(self, 0);
+        }
     }
 
     public struct Color
@@ -110,6 +146,33 @@ namespace xavierHTML.CSS.Values
         public byte g;
         public byte b;
         public byte a;
+
+        public Color(byte r, byte g, byte b) : this()
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = 255;
+        }
+
+        public Color(byte r, byte g, byte b, double a) : this()
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = (byte) (a.Clamp(0.0, 1.0) * 255.0).Round();
+        }
+
+        public Color(string hexColor) : this()
+        {
+            var bytes = Enumerable.Range(0, hexColor.Length / 2)
+                .Select(x => Convert.ToByte(hexColor.Substring(x * 2, 2), 16)).ToArray();
+            this.r = bytes[0];
+            this.g = bytes[1];
+            this.b = bytes[2];
+            this.a = 255;
+        }
+    }
 
     public class Function : Value
     {
