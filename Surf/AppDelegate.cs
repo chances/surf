@@ -16,8 +16,8 @@ namespace Surf
         {
             // Insert code here to initialize your application
             var document = HtmlParser.Parse("<html><body>Hello, world!</body></html>");
-            var nodes = document.Children.Count;
-            Console.Write($"Nodes: {nodes}");
+            var textContent = document.DocumentElement.TextContent;
+            Console.WriteLine($"Document text content: {textContent}");
         }
 
         public override void WillTerminate(NSNotification notification)
