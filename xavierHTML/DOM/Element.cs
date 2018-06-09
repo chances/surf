@@ -14,9 +14,9 @@ namespace xavierHTML.DOM
         public Element(string tagName, List<Node> children) : this(tagName, new Dictionary<string, string>(), children)
         {}
 
-        public Element(string name, Dictionary<string, string> attributes, List<Node> children)
+        public Element(string tagName, Dictionary<string, string> attributes, List<Node> children)
         {
-            TagName = name;
+            TagName = tagName;
             Attributes = attributes;
             Children = children;
         }
