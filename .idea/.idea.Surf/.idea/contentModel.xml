@@ -42,12 +42,17 @@
       <e p="xavierHTML" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="DOM" t="Include">
-          <e p="CommentNode.cs" t="Include" />
-          <e p="Element.cs" t="Include" />
-          <e p="Node.cs" t="Include" />
-          <e p="ScriptNode.cs" t="Include" />
-          <e p="StyleNode.cs" t="Include" />
-          <e p="TextNode.cs" t="Include" />
+          <e p="Document.cs" t="Include" />
+          <e p="Elements" t="Include">
+            <e p="Element.cs" t="Include" />
+          </e>
+          <e p="Nodes" t="Include">
+            <e p="CommentNode.cs" t="Include" />
+            <e p="Node.cs" t="Include" />
+            <e p="ScriptNode.cs" t="Include" />
+            <e p="StyleNode.cs" t="Include" />
+            <e p="TextNode.cs" t="Include" />
+          </e>
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">

@@ -5,6 +5,7 @@ using Sprachtml;
 using Sprachtml.Exceptions;
 using Sprachtml.Models;
 using xavierHTML.DOM;
+using xavierHTML.DOM.Elements;
 
 namespace xavierHTML.Parsers.HTML
 {
@@ -15,7 +16,12 @@ namespace xavierHTML.Parsers.HTML
             new Element("body")
         });
 
-        public static Element Parse(string input)
+        public static Document Parse(string input)
+        {
+            return new Document(ParseDocumentElement(input));
+        }
+
+        private static Element ParseDocumentElement(string input)
         {
             IHtmlNode[] rootNodes;
             try
@@ -40,38 +46,33 @@ namespace xavierHTML.Parsers.HTML
                 return EmptyDocument;
             }
 
-            if (rootNodes.Length >= 1 && rootNodes[0] is HtmlNode)
+            if (rootNodes.Length >= 1 && rootNodes[0] is HtmlNode element)
             {
-                var rootNode = rootNodes[0];
-                if (rootNode is HtmlNode element)
+                var tagName = element.TagName.ToLower();
+                if (tagName.Equals("html"))
                 {
-                    var tagName = element.TagName.ToLower();
-                    if (tagName.Equals("html"))
-                    {
-                        return element.ToElement();
-                    }
-                    else if (tagName.Equals("head"))
-                    {
-                        document = EmptyDocument;
-                        document.Children.Prepend(element.ToElement());
-                        return document;
-                    }
-                    else if (tagName.Equals("body"))
-                    {
-                        document = EmptyDocument;
-                        document.Children.Clear();
-                        document.Children.Add(element.ToElement());
-                        return document;
-                    }
+                    return element.ToElement();
                 }
-                else
+                else if (tagName.Equals("head"))
                 {
-                    return EmptyDocument;
+                    document = EmptyDocument;
+                    document.Children.Prepend(element.ToElement());
+                    return document;
+                }
+                else if (tagName.Equals("body"))
+                {
+                    document = EmptyDocument;
+                    document.Children.Clear();
+                    document.Children.Add(element.ToElement());
+                    return document;
                 }
             }
 
             document = EmptyDocument;
-            document.Children[0].Children.AddRange(rootNodes.Select(node => node.ToNode()));
+            foreach (var n in rootNodes.Select(node => node.ToNode()))
+            {
+                document.Children[0].Children.Add(n);
+            }
             return document;
         }
     }

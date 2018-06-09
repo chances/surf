@@ -2,6 +2,7 @@
 using System.Linq;
 using Sprachtml.Models;
 using xavierHTML.DOM;
+using xavierHTML.DOM.Elements;
 using ScriptNode = Sprachtml.Models.ScriptNode;
 using StyleNode = Sprachtml.Models.StyleNode;
 using TextNode = Sprachtml.Models.TextNode;
