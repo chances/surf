@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Sprache;
+using xavierHTML.CSS.Selectors;
+using xavierHTML.Parsers;
 
 namespace xavierHTML.DOM.Elements
 {
@@ -27,10 +30,22 @@ namespace xavierHTML.DOM.Elements
             {
                 Children.Add(child);
             }
+            
+            // Parse style attributes as CSS
+            if (Attributes.ContainsKey("style"))
+            {
+                var style = Attributes["style"];
+                
+            }
         }
 
-        public string Id => Attributes.FirstOrDefault(pair => pair.Key == "id").Value;
-        public string ClassName => Attributes.FirstOrDefault(pair => pair.Key == "class").Value;
+        public string GetAttribute(string name)
+        {
+            return Attributes.ContainsKey(name) ? Attributes[name] : null;
+        }
+
+        public string Id => GetAttribute("id");
+        public string ClassName => GetAttribute("class");
 
         // TODO: Implement inner text algorithm https://html.spec.whatwg.org/multipage/dom.html#dom-innertext
         public string InnerText => TextContent;
@@ -45,9 +60,37 @@ namespace xavierHTML.DOM.Elements
             }
         }
 
-        public bool Matches(string[] selectors)
+        public bool Matches(IEnumerable<string> selectors)
         {
-            return false;
+            var parsedSelectors = new List<Selector>();
+            foreach (var selector in selectors)
+            {
+                try
+                {
+                    parsedSelectors.Add(Selector.Parser.Parse(selector));
+                }
+                catch (ParserException e)
+                {}
+            }
+
+            return parsedSelectors.Select(s => Matches(s))
+                .Aggregate(false, (hasMatched, sMatches) => hasMatched || sMatches);
+        }
+
+        public bool Matches(Selector selector)
+        {
+            switch (selector)
+            {
+                case SimpleSelector simple:
+                    var tagMatch = simple.TagName == null || simple.TagName == TagName;
+                    var idMatch = simple.Id == null || simple.Id == Id;
+                    var classList = ClassList;
+                    var allSelectedClassesMatch = simple.Classes.All(s => classList.Contains(s));
+                    return tagMatch && idMatch && allSelectedClassesMatch;
+                    break;
+                default:
+                    return false;
+            }
         }
 
         public IEnumerable<Element> GetElementsByTagName(string qualifiedName)

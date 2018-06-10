@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sprache;
 using xavierHTML.CSS.Selectors;
@@ -12,6 +13,7 @@ namespace xavierHTML.CSS
         {
             Selectors = selectors;
             Declarations = declarations;
+            Selectors.Sort((s1, s2) => s1.Specificity.CompareTo(s2.Specificity));
         }
 
         public List<Selector> Selectors { get; }
@@ -20,7 +22,7 @@ namespace xavierHTML.CSS
         private static readonly Parser<IEnumerable<Selector>> _selectors =
         (
             from _ in Tokens.Whitespace
-            from selector in SimpleSelector.Parse
+            from selector in SimpleSelector.Parser
             select selector
         ).DelimitedBy(Sprache.Parse.Char(','));
 

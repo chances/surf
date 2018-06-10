@@ -48,6 +48,9 @@
             <e p="Selector.cs" t="Include" />
           </e>
           <e p="Specificity.cs" t="Include" />
+          <e p="Style" t="Include">
+            <e p="StyledNode.cs" t="Include" />
+          </e>
           <e p="Stylesheet.cs" t="Include" />
           <e p="Values" t="Include">
             <e p="Unit.cs" t="Include" />

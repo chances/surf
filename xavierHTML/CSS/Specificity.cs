@@ -31,5 +31,10 @@ namespace xavierHTML.CSS
             var otherSum = other.TagParts + other.IdParts + other.ClassParts;
             return sum.CompareTo(otherSum);
         }
+
+        public static int CompareSelectors(Selector s1, Selector s2)
+        {
+            return s1.Specificity.CompareTo(s2.Specificity);
+        }
     }
 }

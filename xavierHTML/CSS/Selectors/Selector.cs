@@ -6,7 +6,11 @@ namespace xavierHTML.CSS.Selectors
 {
     public abstract class Selector
     {
+        public Specificity Specificity { get; protected set; }
+        
         protected abstract Selector Combine(Selector other);
+
+        public static readonly Parser<Selector> Parser = SimpleSelector.Parser;
     }
 
     public class SimpleSelector : Selector
@@ -24,6 +28,7 @@ namespace xavierHTML.CSS.Selectors
             TagName = tagName;
             Id = id;
             Classes = classes;
+            Specificity = new Specificity(this);
         }
 
         public static SimpleSelector FromTagName(string tagName)
@@ -52,7 +57,7 @@ namespace xavierHTML.CSS.Selectors
 
         private static readonly Parser<SimpleSelector> _idOrClass = _id.Or(_class);
 
-        public static readonly Parser<SimpleSelector> Parse =
+        public static readonly Parser<SimpleSelector> Parser =
         (
             from tag in _tag
             from rest in _idOrClass.Many()
