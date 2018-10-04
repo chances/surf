@@ -16,24 +16,23 @@ namespace xavierHTML.DOM
         private DocumentReadyState readyState = DocumentReadyState.Loading;
 
         private string title;
-        private Element _document;
+        public Element DocumentElement { get; }
 
-        private readonly Element _body;
-        public Element Body => _body;
+        public Element Body { get; }
+        public Element Head { get; }
 
-        private readonly Element _head;
-        public Element Head => _head;
+        public List<Stylesheet> Stylesheets { get; }
 
         public Document(Element document)
         {
-            _document = document;
-            _body = document.Children.OfType<Element>().FirstOrDefault(element => element.TagName == "body");
-            _head = document.Children.OfType<Element>().FirstOrDefault(element => element.TagName == "head");
+            DocumentElement = document;
+            Body = document.Children.OfType<Element>().FirstOrDefault(element => element.TagName == "body");
+            Head = document.Children.OfType<Element>().FirstOrDefault(element => element.TagName == "head");
             
             // Parse inline stylesheets
             try
             {
-                Stylesheets = _head.Children.Where(node => node is StyleNode)
+                Stylesheets = Head.Children.Where(node => node is StyleNode)
                     .Select(node => CssParser.Parse(((StyleNode) node).Contents)).ToList();
             }
             catch (ParserException e)
@@ -42,10 +41,6 @@ namespace xavierHTML.DOM
                 Stylesheets = new List<Stylesheet>();
             }
         }
-
-        public Element DocumentElement => _document;
-
-        public List<Stylesheet> Stylesheets { get; }
     }
 
     public enum DocumentReadyState
