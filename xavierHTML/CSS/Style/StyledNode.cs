@@ -30,7 +30,9 @@ namespace xavierHTML.CSS.Style
             matchedRules.Sort((matchA, matchB) => Specificity.CompareSelectors(matchA.Item1, matchB.Item1));
             foreach (var matchedRule in matchedRules)
             {
-                foreach (var declaration in matchedRule.Item2.Declarations)
+                var rule = matchedRule.Item2;
+
+                foreach (var declaration in rule.Declarations)
                 {
                     node.SpecifiedValues[declaration.Name] = declaration.Values;
                 }
