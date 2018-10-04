@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Sprache;
+using xavierHTML.CSS;
 using xavierHTML.CSS.Selectors;
 using xavierHTML.Parsers;
+using xavierHTML.Parsers.CSS;
 
 namespace xavierHTML.DOM.Elements
 {
@@ -13,6 +15,7 @@ namespace xavierHTML.DOM.Elements
         public string Ns { get; } = "html";
         public string TagName { get; }
         public Dictionary<string, string> Attributes { get; }
+        public Stylesheet Style { get; }
 
         public Element(string tagName) : this(tagName, new List<Node>())
         {
@@ -30,12 +33,12 @@ namespace xavierHTML.DOM.Elements
             {
                 Children.Add(child);
             }
-            
+
             // Parse style attributes as CSS
             if (Attributes.ContainsKey("style"))
             {
                 var style = Attributes["style"];
-                
+                Style = CssParser.Parse(style);
             }
         }
 
@@ -55,8 +58,9 @@ namespace xavierHTML.DOM.Elements
             get
             {
                 var className = ClassName;
-                if (className == null) return new List<string>();
-                return className.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+                return className == null
+                    ? new List<string>()
+                    : className.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
             }
         }
 
@@ -73,7 +77,7 @@ namespace xavierHTML.DOM.Elements
                 {}
             }
 
-            return parsedSelectors.Select(s => Matches(s))
+            return parsedSelectors.Select(Matches)
                 .Aggregate(false, (hasMatched, sMatches) => hasMatched || sMatches);
         }
 
