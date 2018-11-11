@@ -26,13 +26,13 @@ namespace xavierHTML.DOM
         public Document(Element document)
         {
             DocumentElement = document;
-            Body = document.Children.OfType<Element>().FirstOrDefault(element => element.TagName == "body");
-            Head = document.Children.OfType<Element>().FirstOrDefault(element => element.TagName == "head");
+            Body = document.GetElementsByTagName("body").LastOrDefault();
+            Head = document.GetElementsByTagName("head").FirstOrDefault();
             
             // Parse inline stylesheets
             try
             {
-                Stylesheets = Head.Children.Where(node => node is StyleNode)
+                Stylesheets = Head?.Children.Where(node => node is StyleNode)
                     .Select(node => CssParser.Parse(((StyleNode) node).Contents)).ToList();
             }
             catch (ParserException e)
