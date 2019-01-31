@@ -9,4 +9,4 @@ from [Matt Brubeck](https://limpet.net/mbrubeck/)
 
 [MIT License](http://opensource.org/licenses/MIT)
 
-Copyright © 2018 Chance Snow. All rights reserved.
+Copyright © 2018-2019 Chance Snow. All rights reserved.
