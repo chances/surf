@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using xavierHTML.CSS;
 using xavierHTML.DOM.Elements;
@@ -19,7 +20,32 @@ namespace xavierHTML.DOM
         public Element DocumentElement { get; }
 
         public Element Body { get; }
-        public Element Head { get; }
+        public Element Head { get; private set; }
+
+        public string Title
+        {
+            get => title;
+            set
+            {
+                var titleElement = Head?.GetElementsByTagName("title").FirstOrDefault();
+                if (titleElement == null)
+                {
+                    if (Head == null)
+                    {
+                        Head = new Element("head");
+                        DocumentElement.Children.Add(Head);
+                    }
+                    titleElement = new Element("title", new []{new TextNode(value)});
+                    Debug.Assert(Head != null, nameof(Head) + " != null");
+                    Head.Children.Add(titleElement);
+                }
+                else
+                {
+                    titleElement.Children.Clear();
+                    titleElement.Children.Add(new TextNode(value));
+                }
+            }
+        }
 
         public List<Stylesheet> Stylesheets { get; }
 
@@ -28,7 +54,10 @@ namespace xavierHTML.DOM
             DocumentElement = document;
             Body = document.GetElementsByTagName("body").LastOrDefault();
             Head = document.GetElementsByTagName("head").FirstOrDefault();
-            
+
+            var titleElement = Head?.GetElementsByTagName("title").FirstOrDefault();
+            title = titleElement?.TextContent;
+
             // Parse inline stylesheets
             try
             {
