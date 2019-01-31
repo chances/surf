@@ -10,9 +10,9 @@ namespace xavierHTML.Layout
             Bottom = bottom;
         }
 
-        public float Left { get; }
-        public float Right { get; }
-        public float Top { get; }
-        public float Bottom { get; }
+        public float Left;
+        public float Right;
+        public float Top;
+        public float Bottom;
     }
 }

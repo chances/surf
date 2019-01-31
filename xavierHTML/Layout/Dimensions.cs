@@ -13,10 +13,14 @@ namespace xavierHTML.Layout
         /// <summary>
         /// Position of a box's content area relative to the document origin.
         /// </summary>
-        public Rectangle Content { get; }
-        
-        public EdgeSizes Margin { get; }
-        public EdgeSizes Border { get; }
-        public EdgeSizes Padding { get; }
+        public Rectangle Content;
+
+        public EdgeSizes Margin;
+        public EdgeSizes Border;
+        public EdgeSizes Padding;
+
+        public Rectangle PaddingBox => Content.ExpandedBy(Padding);
+        public Rectangle BorderBox => PaddingBox.ExpandedBy(Padding);
+        public Rectangle MarginBox => BorderBox.ExpandedBy(Margin);
     }
 }

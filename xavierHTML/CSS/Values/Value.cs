@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sprache;
@@ -9,8 +9,19 @@ namespace xavierHTML.CSS.Values
 {
     public abstract class Value
     {
-        public static readonly Parser<Value> Parser = Length.Parser.Or<Value>(String.Parser).Or(Keyword.Parser)
-            .Or(ColorValue.Parser).Or(Function.Parser);
+        public static readonly Parser<Value> Parser =
+            Length.Parser
+                .Or<Value>(String.Parser)
+                .Or(Keyword.Parser)
+                .Or(ColorValue.Parser)
+                .Or(Function.Parser);
+
+        public float ToPixels()
+        {
+            if (this is Length px && px.Unit == Unit.Pixels) return (float) px.Value;
+            // TODO: Other maths to convert other Length values to pixels
+            return 0.0f;
+        }
     }
 
     public class Keyword : Value
@@ -19,6 +30,8 @@ namespace xavierHTML.CSS.Values
         {
             Value = value;
         }
+        
+        public static Keyword Auto = new Keyword("auto");
 
         public string Value { get; }
 
@@ -27,6 +40,33 @@ namespace xavierHTML.CSS.Values
             select new Keyword(keyword);
 
         public override string ToString() => Value;
+
+        protected bool Equals(Keyword other)
+        {
+            return string.Equals(Value, other.Value, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is Keyword other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return StringComparer.InvariantCultureIgnoreCase.GetHashCode(Value);
+        }
+
+        public static bool operator ==(Keyword left, Keyword right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Keyword left, Keyword right)
+        {
+            return !Equals(left, right);
+        }
     }
 
     public class String : Value

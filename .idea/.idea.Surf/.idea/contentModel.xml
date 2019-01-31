@@ -82,6 +82,7 @@
         </e>
         <e p="Layout" t="Include">
           <e p="BoxModel" t="Include">
+            <e p="BlockLayoutBoxExtensions.cs" t="Include" />
             <e p="Box.cs" t="Include" />
           </e>
           <e p="Dimensions.cs" t="Include" />

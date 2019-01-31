@@ -16,8 +16,8 @@ namespace xavierHTML.Layout.BoxModel
             Children = children;
         }
 
-        public Dimensions Dimensions { get; }
-        
+        public Dimensions Dimensions;
+
         /// <summary>
         /// A generic box is an anonymous block box.
         /// </summary>
@@ -69,17 +69,39 @@ namespace xavierHTML.Layout.BoxModel
 
             return new NodeBox(children.AsReadOnly(), rootNode);
         }
+
+        /// <summary>
+        /// Lay out a box and its descendants.
+        /// </summary>
+        /// <param name="container">Dimensions of this box's parent containing block.</param>
+        public void Layout(Dimensions container)
+        {
+            switch (Display)
+            {
+                case Display.Inline:
+                    // TODO: Implement inline box layout algorithm
+                    break;
+                case Display.Block:
+                    this.LayoutBlock(container);
+                    break;
+                case Display.Flex:
+                    // TODO: Implement flex box layout algorithm
+                    break;
+                default:
+                    return;
+            }
+        }
     }
 
     public class NodeBox : Box
     {
-        public NodeBox(ReadOnlyCollection<Box> children, StyledNode node) : base(children)
+        public NodeBox(ReadOnlyCollection<Box> children, StyledNode style) : base(children)
         {
-            Node = node;
+            Style = style;
         }
 
-        public StyledNode Node { get; }
+        public StyledNode Style { get; }
 
-        public new Display Display => Node.Display;
+        public new Display Display => Style.Display;
     }
 }
