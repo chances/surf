@@ -3,6 +3,7 @@ using System.Linq;
 using Sprachtml.Models;
 using xavierHTML.DOM;
 using xavierHTML.DOM.Elements;
+using xavierHTML.DOM.Nodes;
 using ScriptNode = Sprachtml.Models.ScriptNode;
 using StyleNode = Sprachtml.Models.StyleNode;
 using TextNode = Sprachtml.Models.TextNode;
@@ -27,11 +28,11 @@ namespace xavierHTML.Parsers.HTML
                 case HtmlNode n:
                     return n.ToElement();
                 case TextNode n:
-                    return new DOM.TextNode(n.Contents);
+                    return new DOM.Nodes.TextNode(n.Contents);
                 case StyleNode n:
-                    return new DOM.StyleNode(n.Contents);
+                    return new DOM.Nodes.StyleNode(n.Contents);
                 case ScriptNode n:
-                    return new DOM.ScriptNode(n.Contents);
+                    return new DOM.Nodes.ScriptNode(n.Contents);
                 default:
                     return null;
             }

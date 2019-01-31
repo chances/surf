@@ -6,6 +6,7 @@ using Sprachtml.Exceptions;
 using Sprachtml.Models;
 using xavierHTML.DOM;
 using xavierHTML.DOM.Elements;
+using xavierHTML.DOM.Nodes;
 
 namespace xavierHTML.Parsers.HTML
 {

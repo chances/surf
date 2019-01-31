@@ -6,6 +6,7 @@ using xavierHTML.CSS.Selectors;
 using xavierHTML.CSS.Values;
 using xavierHTML.DOM;
 using xavierHTML.DOM.Elements;
+using xavierHTML.DOM.Nodes;
 
 namespace xavierHTML.CSS.Style
 {

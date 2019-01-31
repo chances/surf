@@ -1,4 +1,4 @@
-﻿namespace xavierHTML.DOM
+﻿namespace xavierHTML.DOM.Nodes
 {
     public class ScriptNode : EmptyNode
     {

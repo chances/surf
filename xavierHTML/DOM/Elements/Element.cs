@@ -5,6 +5,7 @@ using System.Linq;
 using Sprache;
 using xavierHTML.CSS;
 using xavierHTML.CSS.Selectors;
+using xavierHTML.DOM.Nodes;
 using xavierHTML.Parsers;
 using xavierHTML.Parsers.CSS;
 

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using xavierHTML.CSS;
 using xavierHTML.DOM.Elements;
+using xavierHTML.DOM.Nodes;
 using xavierHTML.Parsers;
 using xavierHTML.Parsers.CSS;
 

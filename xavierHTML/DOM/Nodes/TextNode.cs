@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace xavierHTML.DOM
+﻿namespace xavierHTML.DOM.Nodes
 {
     public class TextNode : EmptyNode
     {

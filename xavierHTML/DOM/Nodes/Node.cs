@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
 using xavierHTML.DOM.Elements;
 
-namespace xavierHTML.DOM
+namespace xavierHTML.DOM.Nodes
 {
     public abstract class Node
     {
