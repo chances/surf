@@ -10,11 +10,18 @@ namespace xavierHTML.CSS.Values
     {
         public string Name { get; protected set; }
         public string Notation { get; protected set; }
+        
+        public static readonly Percentage Percentage = new Percentage();
+        public static readonly Ems Ems = new Ems();
+        public static readonly Rems Rems = new Rems();
+        public static readonly Points Points = new Points();
+        public static readonly Pixels Pixels = new Pixels();
+        public static readonly Degrees Degrees = new Degrees();
+        public static readonly Radians Radians = new Radians();
 
-        private static Unit[] Units =
+        private static readonly Unit[] Units =
         {
-            new Percentage(), new Ems(), new Rems(), new Points(),
-            new Pixels(), new Degrees(), new Radians()
+            Percentage, Ems, Rems, Points, Pixels, Degrees, Radians
         };
 
         public static readonly Parser<Unit> Parse =

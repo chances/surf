@@ -1,0 +1,48 @@
+using System.Collections.Generic;
+using System.Linq;
+using xavierHTML.CSS.Values;
+
+namespace xavierHTML.CSS.Properties
+{
+    public static class Margin
+    {
+        public static EdgeValues GetMargins(Dictionary<string, List<Value>> specifiedValues)
+        {
+            var properties = specifiedValues.Keys.ToList();
+            
+            var margins = new EdgeValues(new List<Value>(0));
+            
+            // Assign from specified shorthand property
+            var marginShorthand = specifiedValues["margin"];
+            if (marginShorthand != null && marginShorthand.TrueForAll(v => v is Length))
+                margins = new EdgeValues(marginShorthand);
+            
+            // Overwrite with any subsequently specified specific margins
+            var marginTop = specifiedValues["margin-top"]?.FirstOrDefault();
+            if (marginTop != null && properties.IndexOf("margin-top") > properties.IndexOf("margin"))
+            {
+                margins.Top = marginTop;
+            }
+            
+            var marginRight = specifiedValues["margin-right"]?.FirstOrDefault();
+            if (marginRight != null && properties.IndexOf("margin-right") > properties.IndexOf("margin"))
+            {
+                margins.Right = marginRight;
+            }
+            
+            var marginBottom = specifiedValues["margin-bottom"]?.FirstOrDefault();
+            if (marginBottom != null && properties.IndexOf("margin-bottom") > properties.IndexOf("margin"))
+            {
+                margins.Bottom = marginBottom;
+            }
+
+            var marginLeft = specifiedValues["margin-left"]?.FirstOrDefault();
+            if (marginLeft != null && properties.IndexOf("margin-left") > properties.IndexOf("margin"))
+            {
+                margins.Left = marginLeft;
+            }
+
+            return margins;
+        }
+    }
+}

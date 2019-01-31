@@ -47,7 +47,10 @@
         <e p="CSS" t="Include">
           <e p="Declaration.cs" t="Include" />
           <e p="Properties" t="Include">
+            <e p="BorderWidth.cs" t="Include" />
             <e p="Display.cs" t="Include" />
+            <e p="Margin.cs" t="Include" />
+            <e p="Padding.cs" t="Include" />
           </e>
           <e p="Rule.cs" t="Include" />
           <e p="Selectors" t="Include">
@@ -59,6 +62,7 @@
           </e>
           <e p="Stylesheet.cs" t="Include" />
           <e p="Values" t="Include">
+            <e p="EdgeValues.cs" t="Include" />
             <e p="Unit.cs" t="Include" />
             <e p="Value.cs" t="Include" />
           </e>

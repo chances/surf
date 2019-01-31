@@ -11,11 +11,19 @@ namespace xavierHTML.CSS.Style
 {
     public class StyledNode
     {
+        private readonly Lazy<EdgeValues> _margins;
+        private readonly Lazy<EdgeValues> _borderWidths;
+        private readonly Lazy<EdgeValues> _paddings;
+        
         public StyledNode(Node node)
         {
             Node = node;
             SpecifiedValues = new Dictionary<string, List<Value>>();
             Children = new List<StyledNode>();
+            
+            _margins = new Lazy<EdgeValues>(() => Margin.GetMargins(SpecifiedValues));
+            _borderWidths = new Lazy<EdgeValues>(() => BorderWidth.GetBorderWidths(SpecifiedValues));
+            _paddings = new Lazy<EdgeValues>(() => Padding.GetPaddings(SpecifiedValues));
         }
 
         public Node Node { get; }
@@ -43,6 +51,12 @@ namespace xavierHTML.CSS.Style
                 }
             }
         }
+
+        public EdgeValues Margins => _margins.Value;
+
+        public EdgeValues BorderWidths => _borderWidths.Value;
+
+        public EdgeValues Paddings => _paddings.Value;
 
         public Value GetValue(string name) => SpecifiedValues[name]?.FirstOrDefault();
 

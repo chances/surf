@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sprache;
@@ -79,6 +79,9 @@ namespace xavierHTML.CSS.Values
             Value = value;
             Unit = unit;
         }
+
+        public static Length Zero<T>() where T : Unit =>
+            new Length(0.0, Activator.CreateInstance<T>());
 
         public double Value { get; }
         public Unit Unit { get; }
