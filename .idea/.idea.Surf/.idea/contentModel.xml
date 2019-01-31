@@ -46,6 +46,9 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="CSS" t="Include">
           <e p="Declaration.cs" t="Include" />
+          <e p="Properties" t="Include">
+            <e p="Display.cs" t="Include" />
+          </e>
           <e p="Rule.cs" t="Include" />
           <e p="Selectors" t="Include">
             <e p="Selector.cs" t="Include" />

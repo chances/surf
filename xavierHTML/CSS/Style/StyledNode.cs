@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using xavierHTML.CSS.Properties;
 using xavierHTML.CSS.Selectors;
 using xavierHTML.CSS.Values;
 using xavierHTML.DOM;
@@ -22,6 +23,29 @@ namespace xavierHTML.CSS.Style
 
         public List<StyledNode> Children { get; }
 
+        /// <summary>
+        /// Value of this Node's `display` property, defaults to Display.Inline.
+        /// </summary>
+        public Display Display
+        {
+            get
+            {
+                var displayProperty = GetValue("display");
+                if (displayProperty == null || !(displayProperty is Keyword keyword))
+                    return Display.Inline;
+
+                switch (keyword.Value)
+                {
+                    case "none": return Display.None;
+                    case "block": return Display.Block;
+                    case "flex": return Display.Flex;
+                    default: return Display.Inline;
+                }
+            }
+        }
+
+        public Value GetValue(string name) => SpecifiedValues[name]?.FirstOrDefault();
+
         public static StyledNode FromElement(Element rootElement, List<Rule> rules)
         {
             var node = new StyledNode(rootElement);
@@ -35,7 +59,7 @@ namespace xavierHTML.CSS.Style
                 // Specify the highest specific rule declarations
                 SpecifyDeclarations(node, rule);
             }
-            
+
             // Specify declarations from the element's style attribute, if any
             rootElement.Style?.Rules
                 .ForEach(rule => SpecifyDeclarations(node, rule));
