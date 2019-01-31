@@ -32,11 +32,13 @@ namespace xavierHTML.CSS.Style
             {
                 var rule = matchedRule.Item2;
 
-                foreach (var declaration in rule.Declarations)
-                {
-                    node.SpecifiedValues[declaration.Name] = declaration.Values;
-                }
+                // Specify the highest specific rule declarations
+                SpecifyDeclarations(node, rule);
             }
+            
+            // Specify declarations from the element's style attribute, if any
+            rootElement.Style?.Rules
+                .ForEach(rule => SpecifyDeclarations(node, rule));
 
             foreach (var child in rootElement.Children.OfType<Element>())
             {
@@ -52,6 +54,14 @@ namespace xavierHTML.CSS.Style
             if (matchedSelectors.Count == 0) return null;
             matchedSelectors.Sort(Specificity.CompareSelectors);
             return new Tuple<Selector, Rule>(matchedSelectors.LastOrDefault(), rule);
+        }
+
+        private static void SpecifyDeclarations(StyledNode node, Rule rule)
+        {
+            foreach (var declaration in rule.Declarations)
+            {
+                node.SpecifiedValues[declaration.Name] = declaration.Values;
+            }
         }
     }
 }
