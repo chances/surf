@@ -13,8 +13,8 @@ namespace Surf.Views
     public sealed class WebView : UrlDropView
     {
         private bool _isDirty;
-
         private readonly string[] _dropTargetFileExtensions = { "htm", "html" };
+        private string _workingDirectory;
 
         public WebView(CGRect frame) : base(frame)
         {
@@ -23,7 +23,7 @@ namespace Surf.Views
 
             ShouldAcceptDropSubject = ShouldAcceptDropFile;
             DragOperationPerformed += OnDragOperationPerformed;
-
+            
             UpdateLayer(frame);
             
             // TODO: Use this.MarkDirty somewhere when the webview needs updating
@@ -36,11 +36,15 @@ namespace Surf.Views
 
         public Document Document { get; private set; }
         
-        public void LoadHtml(string htmlSource)
+        public void LoadHtml(string htmlSourcePath)
         {
+            _workingDirectory = Directory.GetParent(htmlSourcePath).FullName;
+            var htmlSource = File.ReadAllText(htmlSourcePath);
+
             try
             {
                 Document = HtmlParser.Parse(htmlSource);
+                Document.Stylesheets.Insert(0, UserAgentStylesheet());
                 TitleChanged?.Invoke(this, Document.Title?.Trim() ?? "");
             }
             catch (ParserException ex)
@@ -48,13 +52,18 @@ namespace Surf.Views
                 var alert = new NSAlert {
                     AlertStyle = NSAlertStyle.Critical,
                     InformativeText = ex.ToString(),
-                    MessageText = "Parse Error"
+                    MessageText = "Parser Error"
                 };
                 alert.RunModal();
             }
-            catch
+            catch (Exception ex)
             {
-                // ignored
+                var alert = new NSAlert {
+                    AlertStyle = NSAlertStyle.Critical,
+                    InformativeText = ex.Message,
+                    MessageText = "Error Loading Document"
+                };
+                alert.RunModal();
             }
         }
 
@@ -91,7 +100,7 @@ namespace Surf.Views
         {
             if (File.Exists(droppedPath))
             {
-                LoadHtml(File.ReadAllText(droppedPath));
+                LoadHtml(droppedPath);
                 
                 // TODO: Put documents in the NSDocumentController.SharedDocumentController
             }
@@ -142,6 +151,25 @@ namespace Surf.Views
             }
 
             _isDirty = true;
+        }
+        
+        private static Stylesheet UserAgentStylesheet()
+        {
+            var head = SimpleSelector.FromTagName("head");
+            var displayNone = new Declaration(
+                "display",
+                new List<Value>(new[] {new Keyword("none")})
+            );
+
+            var rules = new List<Rule>
+            {
+                new Rule(
+                    new List<Selector>(new []{ head }),
+                    new List<Declaration>(new []{ displayNone })
+                )
+            };
+
+            return new Stylesheet(rules);
         }
     }
 }

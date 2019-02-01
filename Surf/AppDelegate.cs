@@ -50,10 +50,8 @@ namespace Surf
                 var filepath = openPanel.Url?.Path;
 
                 if (filepath != null && File.Exists(filepath))
-                    _mainWindow.WebView.LoadHtml(File.ReadAllText(filepath));
+                    _mainWindow.WebView.LoadHtml(filepath);
             });
-
-//            if (openPanel.RunModal() != (long) NSModalResponse.OK) return;
         }
 
         public override void WillTerminate(NSNotification notification)
