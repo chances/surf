@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using xavierHTML.CSS.Style;
 using xavierHTML.CSS.Values;
 
 namespace xavierHTML.Layout.BoxModel
@@ -25,18 +26,19 @@ namespace xavierHTML.Layout.BoxModel
 
         private static void CalculateWidth(this Box box, Dimensions container)
         {
-            if (!(box is NodeBox styledBox))
-                throw new InvalidOperationException("Anonymous block box has no style node");
-            var style = styledBox.Style;
+            var style = box is NodeBox styledBox
+                ? styledBox.Style : null;
 
-            var width = style.GetValue("width") ?? Keyword.Auto;
+            var width = style?.GetValue("width") ?? Keyword.Auto;
             
             // margin, border width, and padding have initial value 0
             var zero = Length.Zero<Pixels>();
 
-            var margins = style.Margins;
-            var borderWidths = style.BorderWidths;
-            var paddings = style.Paddings;
+            // Get margin, border-width, and padding styles from NodeBox
+            //  Otherwise, Anonymous block box edges are zero pixels
+            var margins = style?.Margins ?? EdgeValues.Zero;
+            var borderWidths = style?.BorderWidths ?? EdgeValues.Zero;
+            var paddings = style?.Paddings ?? EdgeValues.Zero;
 
             // Minimum horizontal space needed for the box
             var total = (new[]
@@ -116,13 +118,16 @@ namespace xavierHTML.Layout.BoxModel
 
         private static void CalculatePosition(this Box box, Dimensions container)
         {
-            if (!(box is NodeBox styledBox))
-                throw new InvalidOperationException("Anonymous block box has no style node");
-            var style = styledBox.Style;
+            var style = box is NodeBox styledBox
+                ? styledBox.Style : null;
 
-            var margins = style.Margins;
-            var borderWidths = style.BorderWidths;
-            var paddings = style.Paddings;
+            // margin, border width, and padding have initial value 0
+            //
+            // Get margin, border-width, and padding styles from NodeBox
+            //  Otherwise, Anonymous block box edges are zero pixels
+            var margins = style?.Margins ?? EdgeValues.Zero;
+            var borderWidths = style?.BorderWidths ?? EdgeValues.Zero;
+            var paddings = style?.Paddings ?? EdgeValues.Zero;
 
             box.Dimensions.Margin.Top = margins.Top.ToPixels();
             box.Dimensions.Margin.Bottom = margins.Bottom.ToPixels();
@@ -158,15 +163,14 @@ namespace xavierHTML.Layout.BoxModel
 
         private static void CalculateHeight(this Box box)
         {
-            if (!(box is NodeBox styledBox))
-                throw new InvalidOperationException("Anonymous block box has no style node");
-            var style = styledBox.Style;
+            var style = box is NodeBox styledBox ? styledBox.Style : null;
             
             // If the height is set to an explicit length, use that exact length
             // Otherwise, just keep the value set by LayoutChildren
-            var height = style.GetValue("height") ?? Keyword.Auto;
+            var height = style?.GetValue("height") ?? Keyword.Auto;
+
             if (!(height is Keyword autoHeight && autoHeight == Keyword.Auto) &&
-                height is Length length && length.Unit == Unit.Pixels)
+                height is Length length && length.Unit != Unit.Unitless)
             {
                 box.Dimensions.Content.Height = length.ToPixels();
             }

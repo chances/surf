@@ -11,6 +11,7 @@ namespace xavierHTML.CSS.Values
         public string Name { get; protected set; }
         public string Notation { get; protected set; }
         
+        public static readonly Unitless Unitless = new Unitless();
         public static readonly Percentage Percentage = new Percentage();
         public static readonly Ems Ems = new Ems();
         public static readonly Rems Rems = new Rems();
@@ -33,7 +34,7 @@ namespace xavierHTML.CSS.Values
                     if (!option.IsDefined) return new Unitless();
                     var matchedUnit = Units.FirstOrDefault(unit => unit.Notation == option.Get());
                     // TODO: Handle this case with better introspection?
-                    return matchedUnit ?? new Unitless();
+                    return matchedUnit ?? Unitless;
                 });
 
         public override string ToString()

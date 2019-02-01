@@ -14,7 +14,7 @@ namespace xavierHTML.CSS.Values
         public float ToPixels()
         {
             if (this is Length px && px.Unit == Unit.Pixels) return (float) px.Value;
-            // TODO: Other maths to convert other Length values to pixels
+            // TODO: Other maths to convert other Length unit values to pixels
             return 0.0f;
         }
     }

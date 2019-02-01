@@ -64,6 +64,8 @@ namespace xavierHTML.CSS.Values
             Left = left;
         }
 
+        public static EdgeValues Zero = new EdgeValues(new[] { Length.Zero<Pixels>() });
+
         public Value Top;
         public Value Right;
         public Value Bottom;
