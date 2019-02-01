@@ -58,6 +58,18 @@ namespace xavierHTML.CSS.Style
         public EdgeValues BorderWidths => _borderWidths.Value;
 
         public EdgeValues Paddings => _paddings.Value;
+        
+        public Color Color => GetValue("color") is ColorValue c
+            ? c.Color
+            : Color.Black;
+
+        public Color BackgroundColor => GetValue("background-color") is ColorValue c
+            ? c.Color
+            : Color.Transparent;
+        
+        public Color BorderColor => GetValue("border-color") is ColorValue c
+            ? c.Color
+            : Color.Black;
 
         public Value GetValue(string name) => SpecifiedValues[name]?.FirstOrDefault();
 
