@@ -13,30 +13,30 @@ namespace xavierHTML.CSS.Properties
             var borderWidths = new EdgeValues(new List<Value>(0));
 
             // Assign from specified shorthand property
-            var borderWidthShorthand = specifiedValues["border-width"];
+            var borderWidthShorthand = Property.GetValues(specifiedValues, "border-width");
             if (borderWidthShorthand != null && borderWidthShorthand.TrueForAll(v => v is Length))
                 borderWidths = new EdgeValues(borderWidthShorthand);
 
             // Overwrite with any subsequently specified specific borderWidths
-            var borderWidthTop = specifiedValues["border-top-width"]?.FirstOrDefault();
+            var borderWidthTop = Property.GetValue(specifiedValues, "border-top-width");
             if (borderWidthTop != null && properties.IndexOf("border-top-width") > properties.IndexOf("border-width"))
             {
                 borderWidths.Top = borderWidthTop;
             }
 
-            var borderWidthRight = specifiedValues["border-right-width"]?.FirstOrDefault();
+            var borderWidthRight = Property.GetValue(specifiedValues, "border-right-width");
             if (borderWidthRight != null && properties.IndexOf("border-right-width") > properties.IndexOf("border-width"))
             {
                 borderWidths.Right = borderWidthRight;
             }
 
-            var borderWidthBottom = specifiedValues["border-bottom-width"]?.FirstOrDefault();
+            var borderWidthBottom = Property.GetValue(specifiedValues, "border-bottom-width");
             if (borderWidthBottom != null && properties.IndexOf("border-bottom-width") > properties.IndexOf("border-width"))
             {
                 borderWidths.Bottom = borderWidthBottom;
             }
 
-            var borderWidthLeft = specifiedValues["border-left-width"]?.FirstOrDefault();
+            var borderWidthLeft = Property.GetValue(specifiedValues, "border-left-width");
             if (borderWidthLeft != null && properties.IndexOf("border-left-width") > properties.IndexOf("border-width"))
             {
                 borderWidths.Left = borderWidthLeft;

@@ -5,6 +5,7 @@ namespace xavierHTML.CSS.Values
 {
     public struct Color
     {
+        // https://www.w3.org/wiki/CSS/Properties/color/keywords
         public static readonly Color Transparent = new Color(0, 0, 0, 0);
         public static readonly Color Black = new Color("000000");
         public static readonly Color Silver = new Color("C0C0C0");

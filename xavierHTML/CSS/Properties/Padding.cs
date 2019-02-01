@@ -13,30 +13,30 @@ namespace xavierHTML.CSS.Properties
             var paddings = new EdgeValues(new List<Value>(0));
 
             // Assign from specified shorthand property
-            var paddingShorthand = specifiedValues["padding"];
+            var paddingShorthand = Property.GetValues(specifiedValues, "padding");
             if (paddingShorthand != null && paddingShorthand.TrueForAll(v => v is Length))
                 paddings = new EdgeValues(paddingShorthand);
 
             // Overwrite with any subsequently specified specific paddings
-            var paddingTop = specifiedValues["padding-top"]?.FirstOrDefault();
+            var paddingTop = Property.GetValue(specifiedValues, "padding-top");
             if (paddingTop != null && properties.IndexOf("padding-top") > properties.IndexOf("padding"))
             {
                 paddings.Top = paddingTop;
             }
 
-            var paddingRight = specifiedValues["padding-right"]?.FirstOrDefault();
+            var paddingRight = Property.GetValue(specifiedValues, "padding-right");
             if (paddingRight != null && properties.IndexOf("padding-right") > properties.IndexOf("padding"))
             {
                 paddings.Right = paddingRight;
             }
 
-            var paddingBottom = specifiedValues["padding-bottom"]?.FirstOrDefault();
+            var paddingBottom = Property.GetValue(specifiedValues, "padding-bottom");
             if (paddingBottom != null && properties.IndexOf("padding-bottom") > properties.IndexOf("padding"))
             {
                 paddings.Bottom = paddingBottom;
             }
 
-            var paddingLeft = specifiedValues["padding-left"]?.FirstOrDefault();
+            var paddingLeft = Property.GetValue(specifiedValues, "padding-left");
             if (paddingLeft != null && properties.IndexOf("padding-left") > properties.IndexOf("padding"))
             {
                 paddings.Left = paddingLeft;

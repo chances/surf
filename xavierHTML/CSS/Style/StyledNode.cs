@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using xavierHTML.CSS.Properties;
@@ -71,7 +71,7 @@ namespace xavierHTML.CSS.Style
             ? c.Color
             : Color.Black;
 
-        public Value GetValue(string name) => SpecifiedValues[name]?.FirstOrDefault();
+        public Value GetValue(string name) => Property.GetValue(SpecifiedValues, name);
 
         public static StyledNode FromElement(Element rootElement, List<Rule> rules)
         {
