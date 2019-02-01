@@ -8,6 +8,8 @@ namespace Surf
 {
 	public class MainWindow : NSWindow
 	{
+		private const string DefaultTitle = "Surf";
+
 		public static CGSize MinimumSize = new CGSize(640, 480);
 		
 		#region Constructors
@@ -34,7 +36,7 @@ namespace Surf
 		// Shared initialization code
 		private void Initialize ()
 		{
-			Title = "Surf";
+			Title = DefaultTitle;
 			MinSize = MinimumSize;
 			CollectionBehavior = NSWindowCollectionBehavior.FullScreenPrimary;
 
@@ -46,12 +48,20 @@ namespace Surf
 			ContentView = new NSView (Frame);
 			
 			// Add a web view to the window
-			ContentView.AddSubview(new WebView(ContentView.Frame)
+			WebView = new WebView(ContentView.Frame)
 			{
 				AutoresizingMask = NSViewResizingMask.HeightSizable | NSViewResizingMask.WidthSizable
-			});
+			};
+			WebView.TitleChanged += (_, title) =>
+				Title = title.Length > 0
+					? $"{title} - {DefaultTitle}"
+					: DefaultTitle;
+
+			ContentView.AddSubview(WebView);
 		}
 
 		#endregion
+		
+		public WebView WebView { get; private set; }
 	}
 }

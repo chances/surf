@@ -1,9 +1,12 @@
 using System;
+using System.IO;
 using System.Linq;
 using AppKit;
 using CoreAnimation;
 using CoreGraphics;
 using xavierHTML.DOM;
+using xavierHTML.Parsers;
+using xavierHTML.Parsers.HTML;
 
 namespace Surf.Views
 {
@@ -29,7 +32,31 @@ namespace Surf.Views
             // Use this.Display() or this.DisplayIfNeeded() to redraw on demand
         }
 
-        public Document Document { get; }
+        public event EventHandler<string> TitleChanged;
+
+        public Document Document { get; private set; }
+        
+        public void LoadHtml(string htmlSource)
+        {
+            try
+            {
+                Document = HtmlParser.Parse(htmlSource);
+                TitleChanged?.Invoke(this, Document.Title?.Trim() ?? "");
+            }
+            catch (ParserException ex)
+            {
+                var alert = new NSAlert {
+                    AlertStyle = NSAlertStyle.Critical,
+                    InformativeText = ex.ToString(),
+                    MessageText = "Parse Error"
+                };
+                alert.RunModal();
+            }
+            catch
+            {
+                // ignored
+            }
+        }
 
         public override bool WantsUpdateLayer => NeedsDisplay;
 
@@ -62,7 +89,12 @@ namespace Surf.Views
 
         private void OnDragOperationPerformed(object sender, string droppedPath)
         {
-            Console.WriteLine($"Dropped a HTML file: {droppedPath}");
+            if (File.Exists(droppedPath))
+            {
+                LoadHtml(File.ReadAllText(droppedPath));
+                
+                // TODO: Put documents in the NSDocumentController.SharedDocumentController
+            }
         }
 
         private bool ShouldAcceptDropFile(string path)

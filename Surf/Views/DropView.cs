@@ -8,7 +8,7 @@ namespace Surf.Views
 {
     public class UrlDropView : NSView
     {
-        public UrlDropView(CGRect frameRect) : base(frameRect)
+        protected UrlDropView(CGRect frameRect) : base(frameRect)
         {
             // Register as a drop target for URLs and files
             RegisterForDraggedTypes(new string[]
@@ -18,9 +18,9 @@ namespace Surf.Views
             });
         }
 
-        public event EventHandler<string> DragOperationPerformed; 
+        public event EventHandler<string> DragOperationPerformed;
 
-        public Func<string, bool> ShouldAcceptDropSubject { get; set; } = null;
+        protected Func<string, bool> ShouldAcceptDropSubject { private get; set; }
 
         public override NSDragOperation DraggingEntered(NSDraggingInfo sender)
         {

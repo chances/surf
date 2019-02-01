@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using AppKit;
 using Foundation;
@@ -31,9 +32,28 @@ namespace Surf
         {
             NSApplication.SharedApplication.ActivateIgnoringOtherApps(true);
             _mainWindow.MakeKeyAndOrderFront(this);
+        }
+        
+        [Export ("openDocument:")]
+        void OpenDialog (NSObject sender)
+        {
+            var openPanel = NSOpenPanel.OpenPanel;
+            openPanel.ShowsHiddenFiles = false;
+            openPanel.CanChooseFiles = true;
+            openPanel.CanChooseDirectories = false;
+            openPanel.CanCreateDirectories = true;
+            openPanel.AllowsMultipleSelection = false;
+            openPanel.AllowedFileTypes = new[] {"htm", "html"};
             
-            var document = HtmlParser.Parse("<html><head><style>body { background-color: #aaa; height:40px; margin: 0 10em; }</style></head><body>Hello, world!</body></html>");
-            Console.WriteLine($"# of stylesheets: {document.Stylesheets.Count()}");
+            openPanel.BeginSheet(_mainWindow, _ =>
+            {
+                var filepath = openPanel.Url?.Path;
+
+                if (filepath != null && File.Exists(filepath))
+                    _mainWindow.WebView.LoadHtml(File.ReadAllText(filepath));
+            });
+
+//            if (openPanel.RunModal() != (long) NSModalResponse.OK) return;
         }
 
         public override void WillTerminate(NSNotification notification)

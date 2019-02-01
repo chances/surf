@@ -12,7 +12,7 @@ namespace xavierHTML.Parsers.HTML
 {
     public class HtmlParser
     {
-        public static Element EmptyDocument => new Element("html", new List<Node>()
+        private static Element EmptyDocument => new Element("html", new List<Node>()
         {
             new Element("body")
         });

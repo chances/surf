@@ -63,7 +63,8 @@ namespace xavierHTML.DOM
             try
             {
                 Stylesheets = Head?.Children.Where(node => node is StyleNode)
-                    .Select(node => CssParser.Parse(((StyleNode) node).Contents)).ToList();
+                    .Select(node => CssParser.Parse(((StyleNode) node).Contents))
+                    .ToList() ?? new List<Stylesheet>();
             }
             catch (ParserException e)
             {
