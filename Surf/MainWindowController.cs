@@ -31,7 +31,7 @@ namespace Surf
 		// Shared initialization code
 		private void Initialize ()
 		{
-			CGRect contentRect = new CGRect (0, 0, MainWindow.MinimumSize.Width, MainWindow.MinimumSize.Height);
+			var contentRect = new CGRect (0, 0, MainWindow.MinimumSize.Width, MainWindow.MinimumSize.Height);
 			base.Window = new MainWindow(
 				contentRect,
 				NSWindowStyle.Titled |
@@ -41,7 +41,7 @@ namespace Surf
 				NSBackingStore.Buffered,
 				false
 			);
-			
+
 			// Center window on screen, inside screen's visible frame
 			var screen = Window.Screen.Frame;
 			var visibleFrame = Window.Screen.VisibleFrame;
