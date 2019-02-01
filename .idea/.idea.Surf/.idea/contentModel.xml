@@ -39,6 +39,10 @@
         <e p="packages.config" t="Include" />
         <e p="Resources" t="Include" />
         <e p="Surf.csproj" t="IncludeRecursive" />
+        <e p="Views" t="Include">
+          <e p="DropView.cs" t="Include" />
+          <e p="WebView.cs" t="Include" />
+        </e>
       </e>
       <e p="Surf.sln" t="IncludeFlat" />
       <e p="xavierHTML" t="IncludeRecursive">

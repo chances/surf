@@ -91,6 +91,8 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowController.cs" />
+    <Compile Include="Views\DropView.cs" />
+    <Compile Include="Views\WebView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\xavierHTML\xavierHTML.csproj">

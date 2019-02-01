@@ -2,6 +2,7 @@
 using AppKit;
 using CoreGraphics;
 using Foundation;
+using Surf.Views;
 
 namespace Surf
 {
@@ -44,10 +45,13 @@ namespace Surf
 			
 			ContentView = new NSView (Frame);
 			
-			// TODO: Add controls to the ContentView
+			// Add a web view to the window
+			ContentView.AddSubview(new WebView(ContentView.Frame)
+			{
+				AutoresizingMask = NSViewResizingMask.HeightSizable | NSViewResizingMask.WidthSizable
+			});
 		}
 
 		#endregion
 	}
 }
-

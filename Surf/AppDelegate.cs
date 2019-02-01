@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using AppKit;
 using Foundation;
@@ -14,6 +14,11 @@ namespace Surf
         
         public AppDelegate()
         {
+        }
+
+        public override bool OpenFile(NSApplication sender, string filename)
+        {
+            return base.OpenFile(sender, filename);
         }
 
         public override void WillFinishLaunching(NSNotification notification)
