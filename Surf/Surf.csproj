@@ -84,16 +84,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
-    <Compile Include="AppDelegate.cs" />
-    <Compile Include="GameView.cs" />
-    <Compile Include="GameViewController.cs" />
-    <Compile Include="GameViewController.designer.cs">
-      <DependentUpon>GameViewController.cs</DependentUpon>
-    </Compile>
+    <InterfaceDefinition Include="MainMenu.xib" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="MainWindow.xib" />
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="MainWindowController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\xavierHTML\xavierHTML.csproj">

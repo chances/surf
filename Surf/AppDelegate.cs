@@ -9,13 +9,23 @@ namespace Surf
     [Register("AppDelegate")]
     public class AppDelegate : NSApplicationDelegate
     {
+        private MainWindow _mainWindow;
+        private MainWindowController _mainWindowController;
+        
         public AppDelegate()
         {
         }
 
+        public override void WillFinishLaunching(NSNotification notification)
+        {
+            _mainWindowController = new MainWindowController();
+            _mainWindow = _mainWindowController.Window;
+        }
+
         public override void DidFinishLaunching(NSNotification notification)
         {
-            // Insert code here to initialize your application
+            _mainWindow.MakeKeyAndOrderFront(this);
+
             var document = HtmlParser.Parse("<html><head><style>body { background-color: #aaa; height:40px; margin: 0 10em; }</style></head><body>Hello, world!</body></html>");
             Console.WriteLine($"# of stylesheets: {document.Stylesheets.Count()}");
         }
