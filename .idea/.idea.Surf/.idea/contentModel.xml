@@ -65,7 +65,14 @@
           </e>
           <e p="Stylesheet.cs" t="Include" />
           <e p="Values" t="Include">
+            <e p="Color.cs" t="Include" />
+            <e p="ColorValue.cs" t="Include" />
+            <e p="DoubleExtensions.cs" t="Include" />
             <e p="EdgeValues.cs" t="Include" />
+            <e p="Function.cs" t="Include" />
+            <e p="Keyword.cs" t="Include" />
+            <e p="Length.cs" t="Include" />
+            <e p="String.cs" t="Include" />
             <e p="Unit.cs" t="Include" />
             <e p="Value.cs" t="Include" />
           </e>
