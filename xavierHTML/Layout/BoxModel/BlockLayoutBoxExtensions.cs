@@ -159,9 +159,6 @@ namespace xavierHTML.Layout.BoxModel
                 // Track the height so each child is laid out below the previous content
                 box.Dimensions.Content.Height += child.Dimensions.PaddingBox.Height;
             }
-
-            if (box.Dimensions.PaddingBox.Height > 0)
-                Console.WriteLine($"Sum of children's heights: {box.Dimensions.PaddingBox.Height}");
         }
 
         private static void CalculateHeight(this Box box, float containerHeight)

@@ -156,26 +156,6 @@ namespace Surf.Views
 
         private void UpdateLayer(CGRect frame)
         {
-            var shapeLayer = new CAShapeLayer();
-            var path = new CGPath ();
-            var radius = Math.Min(
-                (frame.Width / 2) - 10,
-                (frame.Height / 2) - 10
-            );
-            path.AddArc (
-                0,
-                0,
-                new nfloat(radius),
-                (float)(-(Math.PI / 2)),
-                (float)(3 * Math.PI / 2),
-                false
-            );
-            shapeLayer.Path = path;
-            shapeLayer.Position = new CGPoint (Bounds.Width / 2, Bounds.Height / 2);
-            shapeLayer.FillColor = NSColor.LightGray.CGColor;
-            shapeLayer.StrokeColor = NSColor.Blue.CGColor;
-            shapeLayer.LineWidth = 2;
-            
             _isDirty = true;
 
             foreach (var layer in Layer.Sublayers?.ToList() ?? new List<CALayer>())

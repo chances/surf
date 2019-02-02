@@ -15,7 +15,7 @@ namespace xavierHTML.CSS.Style
         private readonly Lazy<EdgeValues> _margins;
         private readonly Lazy<EdgeValues> _borderWidths;
         private readonly Lazy<EdgeValues> _paddings;
-        
+
         public StyledNode(Node node)
         {
             Node = node;
