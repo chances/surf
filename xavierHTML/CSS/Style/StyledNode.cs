@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using xavierHTML.CSS.Properties;
@@ -58,7 +58,11 @@ namespace xavierHTML.CSS.Style
         public EdgeValues BorderWidths => _borderWidths.Value;
 
         public EdgeValues Paddings => _paddings.Value;
-        
+
+        public int ZIndex => GetValue("z-index") is Length zIndex
+            ? (int) zIndex.Value
+            : 0;
+
         public Color Color => GetValue("color") is ColorValue c
             ? c.Color
             : Color.Black;

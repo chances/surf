@@ -10,6 +10,8 @@ namespace xavierHTML.Layout
             Bottom = bottom;
         }
 
+        public static readonly EdgeSizes Zero = new EdgeSizes(0, 0, 0, 0);
+
         public float Left;
         public float Right;
         public float Top;

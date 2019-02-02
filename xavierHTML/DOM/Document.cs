@@ -15,9 +15,45 @@ namespace xavierHTML.DOM
         private string domain;
         private string referrer;
         private string lastModified;
-        private DocumentReadyState readyState = DocumentReadyState.Loading;
+        private DocumentReadyState _readyState = DocumentReadyState.Loading;
 
-        private string title;
+        private string _title;
+
+        public event EventHandler<DocumentReadyState> ReadyStateChanged; 
+
+        public Document(Element document)
+        {
+            DocumentElement = document;
+            Body = document.GetElementsByTagName("body").LastOrDefault();
+            Head = document.GetElementsByTagName("head").FirstOrDefault();
+
+            var titleElement = Head?.GetElementsByTagName("title").FirstOrDefault();
+            _title = titleElement?.TextContent;
+
+            // Parse inline stylesheets
+            try
+            {
+                Stylesheets = Head?.Children.Where(node => node is StyleNode)
+                    .Select(node => CssParser.Parse(((StyleNode) node).Contents))
+                    .ToList() ?? new List<Stylesheet>();
+            }
+            catch (ParserException e)
+            {
+                Console.WriteLine(e);
+                Stylesheets = new List<Stylesheet>();
+            }
+        }
+
+        public DocumentReadyState ReadyState
+        {
+            get => _readyState;
+            set
+            {
+                _readyState = value;
+                ReadyStateChanged?.Invoke(this, _readyState);
+            }
+        }
+
         public Element DocumentElement { get; }
 
         public Element Body { get; }
@@ -25,7 +61,7 @@ namespace xavierHTML.DOM
 
         public string Title
         {
-            get => title;
+            get => _title;
             set
             {
                 var titleElement = Head?.GetElementsByTagName("title").FirstOrDefault();
@@ -49,29 +85,6 @@ namespace xavierHTML.DOM
         }
 
         public List<Stylesheet> Stylesheets { get; }
-
-        public Document(Element document)
-        {
-            DocumentElement = document;
-            Body = document.GetElementsByTagName("body").LastOrDefault();
-            Head = document.GetElementsByTagName("head").FirstOrDefault();
-
-            var titleElement = Head?.GetElementsByTagName("title").FirstOrDefault();
-            title = titleElement?.TextContent;
-
-            // Parse inline stylesheets
-            try
-            {
-                Stylesheets = Head?.Children.Where(node => node is StyleNode)
-                    .Select(node => CssParser.Parse(((StyleNode) node).Contents))
-                    .ToList() ?? new List<Stylesheet>();
-            }
-            catch (ParserException e)
-            {
-                Console.WriteLine(e);
-                Stylesheets = new List<Stylesheet>();
-            }
-        }
     }
 
     public enum DocumentReadyState

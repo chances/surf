@@ -157,7 +157,10 @@ namespace xavierHTML.Layout.BoxModel
             {
                 child.LayoutBlock(box.Dimensions);
                 // Track the height so each child is laid out below the previous content
-                box.Dimensions.Content.Height += child.Dimensions.MarginBox.Height;
+                var height = box.Dimensions.Content.Height;
+                var childHeight = child.Dimensions.MarginBox.Height;
+                box.Dimensions.Content.Height += childHeight;
+                Console.WriteLine($"{height}+{childHeight} = {box.Dimensions.Content.Height}");
             }
         }
 

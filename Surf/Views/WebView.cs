@@ -1,10 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AppKit;
 using CoreAnimation;
 using CoreGraphics;
+using Surf.Rasterization;
+using xavierHTML.CSS;
+using xavierHTML.CSS.Selectors;
+using xavierHTML.CSS.Values;
 using xavierHTML.DOM;
+using xavierHTML.Layout;
 using xavierHTML.Parsers;
 using xavierHTML.Parsers.HTML;
 
@@ -14,6 +20,8 @@ namespace Surf.Views
     {
         private bool _isDirty;
         private readonly string[] _dropTargetFileExtensions = { "htm", "html" };
+        private readonly DisplayList _displayList = DisplayList.Empty;
+        private Document _document;
         private string _workingDirectory;
 
         public WebView(CGRect frame) : base(frame)
@@ -24,8 +32,6 @@ namespace Surf.Views
             ShouldAcceptDropSubject = ShouldAcceptDropFile;
             DragOperationPerformed += OnDragOperationPerformed;
             
-            UpdateLayer(frame);
-            
             // TODO: Use this.MarkDirty somewhere when the webview needs updating
             // TODO: Something with this.InLiveResize ?
             // TODO:
@@ -34,8 +40,17 @@ namespace Surf.Views
 
         public event EventHandler<string> TitleChanged;
 
-        public Document Document { get; private set; }
-        
+        public Document Document
+        {
+            get => _document;
+            private set
+            {
+                _document = value;
+                UpdateViewport();
+                _displayList.Render(_document);
+            }
+        }
+
         public void LoadHtml(string htmlSourcePath)
         {
             _workingDirectory = Directory.GetParent(htmlSourcePath).FullName;
@@ -46,6 +61,8 @@ namespace Surf.Views
                 Document = HtmlParser.Parse(htmlSource);
                 Document.Stylesheets.Insert(0, UserAgentStylesheet());
                 TitleChanged?.Invoke(this, Document.Title?.Trim() ?? "");
+
+                Render();
             }
             catch (ParserException ex)
             {
@@ -91,9 +108,29 @@ namespace Surf.Views
 
         public override void ResizeWithOldSuperviewSize(CGSize oldSize)
         {
-            UpdateLayer(Frame);
-            
+            Render();
+
             base.ResizeWithOldSuperviewSize(oldSize);
+        }
+
+        private void LoadExternalAssets()
+        {
+            // TODO: Load external stylesheets
+        }
+
+        private void Render()
+        {
+            UpdateViewport();
+            _displayList.Render();
+            UpdateLayer(_displayList.Viewport.Content.ToCgRect());
+        }
+
+        private void UpdateViewport()
+        {
+            _displayList.Viewport = new Dimensions(new Rectangle(
+                0, 0,
+                (float) Frame.Width, (float) Frame.Height
+            ));
         }
 
         private void OnDragOperationPerformed(object sender, string droppedPath)
@@ -140,19 +177,39 @@ namespace Surf.Views
             shapeLayer.FillColor = NSColor.LightGray.CGColor;
             shapeLayer.StrokeColor = NSColor.Blue.CGColor;
             shapeLayer.LineWidth = 2;
-
-            if ((Layer.Sublayers?.Length ?? 0) == 0)
-            {
-                Layer.AddSublayer(shapeLayer);
-            }
-            else
-            {
-                Layer.ReplaceSublayer(Layer.Sublayers.First(), shapeLayer);
-            }
-
+            
             _isDirty = true;
+
+            foreach (var layer in Layer.Sublayers?.ToList() ?? new List<CALayer>())
+            {
+                layer.RemoveFromSuperLayer();
+                layer.Dispose();
+            }
+
+            foreach (var command in _displayList)
+            {
+                var shapeBounds = command.OpaqueBounds.ToCgRect();
+                var shape = new CAShapeLayer
+                {
+                    Position = shapeBounds.Location,
+                    Bounds = shapeBounds
+                };
+
+                if (command is SolidColor solidShape)
+                {
+                    var colorComponents = solidShape.Color.Components.Aggregate("", (a, b) => $"{a},{b}");
+                    Console.WriteLine($"Filled rectangle: {shapeBounds.Width}x{shapeBounds.Height} @ {shape.Position.X},{shape.Position.Y}");
+                    shape.FillColor = solidShape.Color;
+
+                    if (solidShape.BorderWidth <= 0) continue;
+                    shape.StrokeColor = solidShape.BorderColor;
+                    shape.LineWidth = solidShape.BorderWidth;
+                }
+
+                Layer.AddSublayer(shape);
+            }
         }
-        
+
         private static Stylesheet UserAgentStylesheet()
         {
             var head = SimpleSelector.FromTagName("head");

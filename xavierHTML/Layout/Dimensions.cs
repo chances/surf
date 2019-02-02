@@ -2,6 +2,14 @@ namespace xavierHTML.Layout
 {
     public struct Dimensions
     {
+        public Dimensions(Rectangle content)
+        {
+            Content = content;
+            Margin = EdgeSizes.Zero;
+            Border = EdgeSizes.Zero;
+            Padding = EdgeSizes.Zero;
+        }
+
         public Dimensions(Rectangle content, EdgeSizes margin, EdgeSizes border, EdgeSizes padding)
         {
             Content = content;

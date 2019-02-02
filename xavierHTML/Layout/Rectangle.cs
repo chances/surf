@@ -15,6 +15,9 @@ namespace xavierHTML.Layout
         public float Width;
         public float Height;
 
+        public float Bottom => Y + Height;
+        public float Right => X + Width;
+
         public Rectangle ExpandedBy(EdgeSizes edges)
         {
             return new Rectangle(

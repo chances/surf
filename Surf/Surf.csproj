@@ -91,6 +91,10 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowController.cs" />
+    <Compile Include="Rasterization\ColorExtensions.cs" />
+    <Compile Include="Rasterization\DisplayCommand.cs" />
+    <Compile Include="Rasterization\DisplayList.cs" />
+    <Compile Include="Rasterization\RectangleExtensions.cs" />
     <Compile Include="Views\DropView.cs" />
     <Compile Include="Views\WebView.cs" />
   </ItemGroup>
