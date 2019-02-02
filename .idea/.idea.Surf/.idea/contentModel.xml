@@ -105,6 +105,7 @@
           <e p="Dimensions.cs" t="Include" />
           <e p="EdgeSizes.cs" t="Include" />
           <e p="Rectangle.cs" t="Include" />
+          <e p="Size.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">

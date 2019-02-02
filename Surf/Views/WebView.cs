@@ -121,16 +121,14 @@ namespace Surf.Views
         private void Render()
         {
             UpdateViewport();
-            _displayList.Render();
-            UpdateLayer(_displayList.Viewport.Content.ToCgRect());
+            UpdateLayer(_displayList.Viewport.ToCgRect());
         }
 
         private void UpdateViewport()
         {
-            _displayList.Viewport = new Dimensions(new Rectangle(
-                0, 0,
+            _displayList.Viewport = new Rectangle(
                 (float) Frame.Width, (float) Frame.Height
-            ));
+            );
         }
 
         private void OnDragOperationPerformed(object sender, string droppedPath)
@@ -191,19 +189,25 @@ namespace Surf.Views
                 var shapeBounds = command.OpaqueBounds.ToCgRect();
                 var shape = new CAShapeLayer
                 {
-                    Position = shapeBounds.Location,
-                    Bounds = shapeBounds
+                    Position = ConvertPointToLayer(new CGPoint(
+                        shapeBounds.X + shapeBounds.Width / 2.0,
+                        Frame.Height - shapeBounds.Bottom + shapeBounds.Height / 2.0
+                    )),
+                    Bounds = shapeBounds,
                 };
+
+                Console.WriteLine($"{{X: {shapeBounds.X}, Y: {shapeBounds.Y}, Width: {shapeBounds.Width}, Height: {shapeBounds.Height}}}");
 
                 if (command is SolidColor solidShape)
                 {
-                    var colorComponents = solidShape.Color.Components.Aggregate("", (a, b) => $"{a},{b}");
-                    Console.WriteLine($"Filled rectangle: {shapeBounds.Width}x{shapeBounds.Height} @ {shape.Position.X},{shape.Position.Y}");
-                    shape.FillColor = solidShape.Color;
+                    shape.BackgroundColor = solidShape.Color;
 
-                    if (solidShape.BorderWidth <= 0) continue;
-                    shape.StrokeColor = solidShape.BorderColor;
-                    shape.LineWidth = solidShape.BorderWidth;
+                    if (solidShape.BorderWidth > 0)
+                    {
+                        shape.Path = CGPath.FromRect(shapeBounds);
+                        shape.StrokeColor = solidShape.BorderColor;
+                        shape.LineWidth = solidShape.BorderWidth;
+                    }
                 }
 
                 Layer.AddSublayer(shape);

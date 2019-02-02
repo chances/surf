@@ -73,8 +73,8 @@ namespace xavierHTML.Layout.BoxModel
         /// <summary>
         /// Lay out a box and its descendants.
         /// </summary>
-        /// <param name="container">Dimensions of this box's parent containing block.</param>
-        public void Layout(Dimensions container)
+        /// <param name="viewport">Size of this box's container.</param>
+        public void Layout(Size viewport)
         {
             switch (Display)
             {
@@ -82,7 +82,9 @@ namespace xavierHTML.Layout.BoxModel
                     // TODO: Implement inline box layout algorithm
                     break;
                 case Display.Block:
-                    this.LayoutBlock(container);
+                    this.LayoutBlock(viewport, new Rectangle(
+                        viewport.Width, 0
+                    ));
                     break;
                 case Display.Flex:
                     // TODO: Implement flex box layout algorithm
@@ -90,6 +92,8 @@ namespace xavierHTML.Layout.BoxModel
                 default:
                     return;
             }
+            
+            Console.WriteLine($"Total height: {Dimensions.BorderBox.Height}");
         }
     }
 
