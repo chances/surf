@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{9B4530FE-995D-4A74-BCD3-05A7A1B69978}</ProjectGuid>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A530B76C-A587-431C-92F6-3A80DB4B41EC}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>Surf</RootNamespace>
@@ -12,7 +12,7 @@
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -27,12 +27,13 @@
     <IncludeMonoRuntime>false</IncludeMonoRuntime>
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
-    <PlatformTarget>x86</PlatformTarget>
+    <HttpClientHandler></HttpClientHandler>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
+    <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>false</EnableCodeSigning>
@@ -41,21 +42,20 @@
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
+    <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
     <LinkMode>SdkOnly</LinkMode>
-    <PlatformTarget>x86</PlatformTarget>
+    <HttpClientHandler></HttpClientHandler>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Sprache, Version=2.1.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Sprache.2.1.2\lib\netstandard2.0\Sprache.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Sprachtml, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Sprachtml.1.0.26\lib\netstandard2.0\Sprachtml.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
+    <Reference Include="Sprache">
+      <HintPath>..\packages\Sprache.2.1.2\lib\netstandard2.0\Sprache.dll</HintPath>
+    </Reference>
+    <Reference Include="Sprachtml">
+      <HintPath>..\packages\Sprachtml.1.0.26\lib\netstandard2.0\Sprachtml.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -72,11 +72,9 @@
     <ImageAsset Include="Assets.xcassets\Contents.json" />
   </ItemGroup>
   <ItemGroup>
-    <SceneKitAsset Include="art.scnassets\ship.dae" />
-    <SceneKitAsset Include="art.scnassets\texture.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Views\" />
+    <Folder Include="Rasterization\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -84,23 +82,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="MainMenu.xib" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="MainWindow.cs" />
-    <Compile Include="MainWindowController.cs" />
-    <Compile Include="Rasterization\ColorExtensions.cs" />
-    <Compile Include="Rasterization\DisplayCommand.cs" />
-    <Compile Include="Rasterization\DisplayList.cs" />
-    <Compile Include="Rasterization\RectangleExtensions.cs" />
-    <Compile Include="Views\DropView.cs" />
+    <Compile Include="ViewController.cs" />
+    <Compile Include="ViewController.designer.cs">
+      <DependentUpon>ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UrlDropView.cs" />
     <Compile Include="Views\WebView.cs" />
+    <Compile Include="Rasterization\DisplayList.cs" />
+    <Compile Include="Rasterization\DisplayCommand.cs" />
+    <Compile Include="Rasterization\RectangleExtensions.cs" />
+    <Compile Include="Rasterization\ColorExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="Main.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\xavierHTML\xavierHTML.csproj">
-      <Project>{a989e6c9-3702-4b05-9119-8802b89c530f}</Project>
+      <Project>{A989E6C9-3702-4B05-9119-8802B89C530F}</Project>
       <Name>xavierHTML</Name>
     </ProjectReference>
   </ItemGroup>

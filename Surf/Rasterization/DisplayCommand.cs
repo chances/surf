@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using CoreGraphics;
 using xavierHTML.Layout;
 using xavierHTML.Layout.BoxModel;
@@ -21,8 +21,8 @@ namespace Surf.Rasterization
     {
         public SolidColor(NodeBox box) : base(box)
         {
-            Color = box.Style.BackgroundColor.ToCGCOlor();
-            BorderColor = box.Style.BorderColor.ToCGCOlor();
+            Color = box.Style.BackgroundColor.ToCGColor();
+            BorderColor = box.Style.BorderColor.ToCGColor();
             // TODO: Support border widths on all sides
             BorderWidth = box.Dimensions.Border.Top;
         }

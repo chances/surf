@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,14 +28,6 @@ namespace Surf.Views
         {
             WantsLayer = true;
             LayerContentsRedrawPolicy = NSViewLayerContentsRedrawPolicy.OnSetNeedsDisplay;
-
-            ShouldAcceptDropSubject = ShouldAcceptDropFile;
-            DragOperationPerformed += OnDragOperationPerformed;
-            
-            // TODO: Use this.MarkDirty somewhere when the webview needs updating
-            // TODO: Something with this.InLiveResize ?
-            // TODO:
-            // Use this.Display() or this.DisplayIfNeeded() to redraw on demand
         }
 
         public event EventHandler<string> TitleChanged;
@@ -66,7 +58,8 @@ namespace Surf.Views
             }
             catch (ParserException ex)
             {
-                var alert = new NSAlert {
+                var alert = new NSAlert
+                {
                     AlertStyle = NSAlertStyle.Critical,
                     InformativeText = ex.ToString(),
                     MessageText = "Parser Error"
@@ -75,7 +68,8 @@ namespace Surf.Views
             }
             catch (Exception ex)
             {
-                var alert = new NSAlert {
+                var alert = new NSAlert
+                {
                     AlertStyle = NSAlertStyle.Critical,
                     InformativeText = ex.Message,
                     MessageText = "Error Loading Document"
@@ -90,10 +84,10 @@ namespace Surf.Views
         {
             NeedsDisplay = _isDirty;
             _isDirty = false;
-            
+
             base.ViewWillDraw();
         }
-        
+
         public override void DraggingEnded(NSDraggingInfo sender)
         {
             Layer.BorderWidth = 0;
@@ -127,7 +121,7 @@ namespace Surf.Views
         private void UpdateViewport()
         {
             _displayList.Viewport = new Rectangle(
-                (float) Frame.Width, (float) Frame.Height
+                (float)Frame.Width, (float)Frame.Height
             );
         }
 
@@ -136,7 +130,7 @@ namespace Surf.Views
             if (File.Exists(droppedPath))
             {
                 LoadHtml(droppedPath);
-                
+
                 // TODO: Put documents in the NSDocumentController.SharedDocumentController
             }
         }
@@ -199,7 +193,7 @@ namespace Surf.Views
             var head = SimpleSelector.FromTagName("head");
             var displayNone = new Declaration(
                 "display",
-                new List<Value>(new[] {new Keyword("none")})
+                new List<Value>(new[] { new Keyword("none") })
             );
 
             var rules = new List<Rule>

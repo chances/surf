@@ -20,7 +20,7 @@ namespace xavierHTML.CSS.Values
         private static readonly Parser<double> _number = Sprache.Parse.DecimalInvariant.Select(s =>
             !double.TryParse(s, out var number) ? double.NegativeInfinity : number);
 
-        public static readonly Parser<Length> Parser =
+        public static new readonly Parser<Length> Parser =
             from value in _number
             from unit in Unit.Parse
             select new Length(value, unit);

@@ -1,4 +1,4 @@
-using CoreGraphics;
+﻿using CoreGraphics;
 using xavierHTML.Layout;
 
 namespace Surf.Rasterization

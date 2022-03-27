@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using AppKit;
 using CoreGraphics;
@@ -24,15 +24,14 @@ namespace Surf.Views
 
         public override NSDragOperation DraggingEntered(NSDraggingInfo sender)
         {
+
             if (ShouldAcceptDropSubject == null) return base.DraggingEntered(sender);
 
             try
             {
                 var path = GetFilePathFromPasteboard(sender.DraggingPasteboard);
-
-                return path != null && ShouldAcceptDropSubject(path)
-                    ? NSDragOperation.Copy
-                    : base.DraggingEntered(sender);
+                if (path != null && ShouldAcceptDropSubject(path))
+                    return NSDragOperation.Copy;
             }
             catch
             {

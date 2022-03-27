@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surf", "Surf\Surf.csproj", "{9B4530FE-995D-4A74-BCD3-05A7A1B69978}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xavierHTML", "xavierHTML\xavierHTML.csproj", "{A989E6C9-3702-4B05-9119-8802B89C530F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xavierHTML.Tests", "xavierHTML.Tests\xavierHTML.Tests.csproj", "{403722CC-7D73-4A39-A8E5-77E06142ECF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Surf", "Surf\Surf.csproj", "{A530B76C-A587-431C-92F6-3A80DB4B41EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,10 +13,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9B4530FE-995D-4A74-BCD3-05A7A1B69978}.Debug|x86.ActiveCfg = Debug|x86
-		{9B4530FE-995D-4A74-BCD3-05A7A1B69978}.Debug|x86.Build.0 = Debug|x86
-		{9B4530FE-995D-4A74-BCD3-05A7A1B69978}.Release|x86.ActiveCfg = Release|x86
-		{9B4530FE-995D-4A74-BCD3-05A7A1B69978}.Release|x86.Build.0 = Release|x86
 		{A989E6C9-3702-4B05-9119-8802B89C530F}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{A989E6C9-3702-4B05-9119-8802B89C530F}.Debug|x86.Build.0 = Debug|Any CPU
 		{A989E6C9-3702-4B05-9119-8802B89C530F}.Release|x86.ActiveCfg = Release|Any CPU
@@ -25,5 +21,9 @@ Global
 		{403722CC-7D73-4A39-A8E5-77E06142ECF6}.Debug|x86.Build.0 = Debug|Any CPU
 		{403722CC-7D73-4A39-A8E5-77E06142ECF6}.Release|x86.ActiveCfg = Release|Any CPU
 		{403722CC-7D73-4A39-A8E5-77E06142ECF6}.Release|x86.Build.0 = Release|Any CPU
+		{A530B76C-A587-431C-92F6-3A80DB4B41EC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A530B76C-A587-431C-92F6-3A80DB4B41EC}.Debug|x86.Build.0 = Debug|Any CPU
+		{A530B76C-A587-431C-92F6-3A80DB4B41EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{A530B76C-A587-431C-92F6-3A80DB4B41EC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

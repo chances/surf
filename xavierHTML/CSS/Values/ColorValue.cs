@@ -27,7 +27,7 @@ namespace xavierHTML.CSS.Values
             from hex in Parse.Repeat(_hexDigit, 6).Text()
             select new Color(hex);
 
-        public static readonly Parser<ColorValue> Parser =
+        public static new readonly Parser<ColorValue> Parser =
             _3hexDigitsColor.Or(_6hexDigitsColor).Select(color => new ColorValue(color));
 
         public override string ToString()

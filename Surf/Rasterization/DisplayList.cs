@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +17,12 @@ namespace Surf.Rasterization
         private StyledNode _styleTree;
         private Rectangle _viewport;
 
-        private DisplayList() {}
+        private DisplayList() { }
 
         public DisplayList(Document document, Rectangle viewport)
         {
             _viewport = viewport;
-            
+
             Render(document);
         }
 
@@ -56,7 +56,7 @@ namespace Surf.Rasterization
                     return rules;
                 });
             _styleTree = StyledNode.FromElement(document.DocumentElement, styleRules);
-            
+
             LayoutAndRender();
         }
 
@@ -94,7 +94,7 @@ namespace Surf.Rasterization
                               nodeBox.Style.BorderColor.A > 0;
 
             if (isBoxOpaque)
-                _list.Add(new SolidColor((NodeBox) box));
+                _list.Add(new SolidColor((NodeBox)box));
 
             foreach (var child in box.Children)
             {

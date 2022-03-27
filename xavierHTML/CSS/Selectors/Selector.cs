@@ -57,7 +57,7 @@ namespace xavierHTML.CSS.Selectors
 
         private static readonly Parser<SimpleSelector> _idOrClass = _id.Or(_class);
 
-        public static readonly Parser<SimpleSelector> Parser =
+        public static new readonly Parser<SimpleSelector> Parser =
         (
             from tag in _tag
             from rest in _idOrClass.Many()

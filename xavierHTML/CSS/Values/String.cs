@@ -40,7 +40,7 @@ namespace xavierHTML.CSS.Values
             from close in _doubleQuote
             select body;
 
-        public static readonly Parser<String> Parser = _singleQuoteString.Or(_doubleQuoteString)
+        public static new readonly Parser<String> Parser = _singleQuoteString.Or(_doubleQuoteString)
             .Select(s => new String(s));
         
         public override string ToString() => Value;

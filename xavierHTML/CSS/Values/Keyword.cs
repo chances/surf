@@ -15,7 +15,7 @@ namespace xavierHTML.CSS.Values
 
         public string Value { get; }
 
-        public static readonly Parser<Keyword> Parser =
+        public static new readonly Parser<Keyword> Parser =
             from keyword in Tokens.Identifier
             select new Keyword(keyword);
 

@@ -16,7 +16,7 @@ namespace xavierHTML.CSS.Values
         public string Name { get; }
         public List<Value> Parameters { get; }
 
-        public static readonly Parser<Function> Parser =
+        public static new readonly Parser<Function> Parser =
             from name in Tokens.Identifier
             from open in Sprache.Parse.Char('(')
             from op_ws in Tokens.Whitespace
