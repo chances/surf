@@ -22,7 +22,7 @@ namespace Surf.Rasterization
         public DisplayList(Document document, Rectangle viewport)
         {
             _viewport = viewport;
-            
+
             Render(document);
         }
 
@@ -56,7 +56,7 @@ namespace Surf.Rasterization
                     return rules;
                 });
             _styleTree = StyledNode.FromElement(document.DocumentElement, styleRules);
-            
+
             LayoutAndRender();
         }
 

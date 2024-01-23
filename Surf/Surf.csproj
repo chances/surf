@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -8,8 +8,16 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Surf</RootNamespace>
     <AssemblyName>Surf</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <TargetFramework Condition="'$(TargetFrameworkOverride)' == ''">net6.0</TargetFramework>
+    <LangVersion Condition="'$(langVersion)' != ''">$(ProjectLanguageVersion)</LangVersion>
+    <ImplicitUsings Condition="'$(csharpFeature_ImplicitUsings)' == 'true'">enable</ImplicitUsings>
+    <Nullable Condition="'$(csharpFeature_Nullable)' == 'true'">enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +52,9 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <!-- <PackageReference Include="GirCore.Gdk-4.0" Version="0.4.0" /> -->
+    <PackageReference Include="GirCore.Adw-1" Version="0.4.0" />
+    <PackageReference Include="GirCore.Gtk-4.0" Version="0.4.0" />
     <Reference Include="Sprache, Version=2.1.2.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Sprache.2.1.2\lib\netstandard2.0\Sprache.dll</HintPath>
       <Private>True</Private>
@@ -62,33 +73,37 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
-    <Compile Include="AppDelegate.cs" />
-    <Compile Include="MainWindow.cs" />
-    <Compile Include="MainWindowController.cs" />
-    <Compile Include="Rasterization\ColorExtensions.cs" />
-    <Compile Include="Rasterization\DisplayCommand.cs" />
-    <Compile Include="Rasterization\DisplayList.cs" />
-    <Compile Include="Rasterization\RectangleExtensions.cs" />
-    <Compile Include="Views\DropView.cs" />
-    <Compile Include="Views\WebView.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\xavierHTML\xavierHTML.csproj">
       <Project>{a989e6c9-3702-4b05-9119-8802b89c530f}</Project>
       <Name>xavierHTML</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <!--<Compile Include="Rasterization\ColorExtensions.cs" />-->
+    <Compile Include="Rasterization\DisplayList.cs" />
+    <!--<Compile Include="Rasterization\RectangleExtensions.cs" />-->
+  </ItemGroup>
   <!-- OS-specific configurations -->
   <!-- See https://learn.microsoft.com/en-us/visualstudio/msbuild/property-functions?view=vs-2022#msbuild-property-functions -->
   <!-- See https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.osplatform?view=net-8.0#properties -->
-  <!-- Linux -->
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
-    <PackageReference Include="GirCore.Gtk-4.0" Version="0.4.0" />
-    <PackageReference Include="GirCore.Adw-1" Version="0.4.0" />
+  <!-- Linux & Windows -->
+  <ItemGroup Condition="!$(RuntimeIdentifier.StartsWith('osx'))">
+    <Compile Include="Program.Gtk.cs" />
+    <Compile Include="Rasterization\DisplayCommand.Gtk.cs" />
   </ItemGroup>
   <!-- macOS -->
   <Import Condition="$([MSBuild]::IsOSPlatform('OSX'))" Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+    <Compile Include="Program.macOS.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="MainWindowController.cs" />
+    <Compile Include="Rasterization\ColorExtensions.cs" />
+    <Compile Include="Rasterization\DisplayCommand.macOS.cs" />
+    <Compile Include="Rasterization\RectangleExtensions.cs" />
+    <Compile Include="Views\DropView.cs" />
+    <Compile Include="Views\WebView.cs" />
+  </ItemGroup>
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
     <Reference Include="Xamarin.Mac" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
