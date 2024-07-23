@@ -103,6 +103,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <!-- See https://stackoverflow.com/a/51962412/1363247 -->
+    <!-- <EmbeddedResource Include="Resources.resx" /> -->
+    <EmbeddedResource Include="**\*.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <Compile Include="Rasterization\ColorExtensions.cs" />
     <Compile Include="Rasterization\DisplayCommand.cs" />
     <Compile Include="Rasterization\DisplayList.cs" />
