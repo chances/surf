@@ -1,11 +1,19 @@
 ﻿using System;
+#if Windows
+using System.Windows.Forms;
+#elif OSX
 using AppKit;
 using CoreGraphics;
 using Foundation;
 using Surf.Views;
+#endif
 
 namespace Surf
 {
+#if Windows
+	public partial class MainWindow : Form
+	{}
+#elif OSX
 	public class MainWindow : NSWindow
 	{
 		private const string DefaultTitle = "Surf";
@@ -64,4 +72,5 @@ namespace Surf
 		
 		public WebView WebView { get; private set; }
 	}
+#endif
 }

@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <PlatformTarget>anycpu</PlatformTarget>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
     <ProjectGuid>{9B4530FE-995D-4A74-BCD3-05A7A1B69978}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>Surf</RootNamespace>
     <AssemblyName>Surf</AssemblyName>
-    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <MonoMacResourcePrefix Condition="'$(IsOSX)'=='true'">Resources</MonoMacResourcePrefix>
     <TargetFramework Condition="'$(TargetFrameworkOverride)' == ''">net6.0</TargetFramework>
     <LangVersion Condition="'$(langVersion)' != ''">$(ProjectLanguageVersion)</LangVersion>
     <ImplicitUsings Condition="'$(csharpFeature_ImplicitUsings)' == 'true'">enable</ImplicitUsings>
@@ -19,7 +19,26 @@
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  <!-- See https://blog.magnusmontin.net/2018/11/05/platform-conditional-compilation-in-net-core -->
+  <PropertyGroup>
+    <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
+    <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
+    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsWindows)'=='true'">
+    <DefineConstants>Windows</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsOSX)'=='true'">
+    <DefineConstants>OSX</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsLinux)'=='true'">
+    <DefineConstants>Linux</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsWindows)'=='true'">
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -52,9 +71,14 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <!-- TODO: Upgrade to GirCore.Gdk@4.0 -->
     <!-- <PackageReference Include="GirCore.Gdk-4.0" Version="0.4.0" /> -->
-    <PackageReference Include="GirCore.Adw-1" Version="0.4.0" />
-    <PackageReference Include="GirCore.Gtk-4.0" Version="0.4.0" />
+    <PackageReference Include="GirCore.Adw-1" Version="0.5.0" />
+    <PackageReference Include="GirCore.Gtk-4.0" Version="0.5.0" />
+    <!-- <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.106">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference> -->
     <Reference Include="Sprache, Version=2.1.2.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Sprache.2.1.2\lib\netstandard2.0\Sprache.dll</HintPath>
       <Private>True</Private>
@@ -79,17 +103,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <!--<Compile Include="Rasterization\ColorExtensions.cs" />-->
+    <Compile Include="Rasterization\ColorExtensions.cs" />
+    <Compile Include="Rasterization\DisplayCommand.cs" />
     <Compile Include="Rasterization\DisplayList.cs" />
-    <!--<Compile Include="Rasterization\RectangleExtensions.cs" />-->
+    <Compile Include="Rasterization\RectangleExtensions.cs" />
   </ItemGroup>
+  
   <!-- OS-specific configurations -->
   <!-- See https://learn.microsoft.com/en-us/visualstudio/msbuild/property-functions?view=vs-2022#msbuild-property-functions -->
   <!-- See https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.osplatform?view=net-8.0#properties -->
-  <!-- Linux & Windows -->
-  <ItemGroup Condition="!$(RuntimeIdentifier.StartsWith('osx'))">
+  <!-- Windows -->
+  <ItemGroup Condition="'$(IsWindows)'=='true'">
+    <Compile Include="Program.Windows.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="MainWindow.Designer.cs" />
+  </ItemGroup>
+  <!-- Linux -->
+  <ItemGroup Condition="'$(IsLinux)'=='true'">
     <Compile Include="Program.Gtk.cs" />
-    <Compile Include="Rasterization\DisplayCommand.Gtk.cs" />
   </ItemGroup>
   <!-- macOS -->
   <Import Condition="$([MSBuild]::IsOSPlatform('OSX'))" Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
@@ -98,9 +129,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowController.cs" />
-    <Compile Include="Rasterization\ColorExtensions.cs" />
     <Compile Include="Rasterization\DisplayCommand.macOS.cs" />
-    <Compile Include="Rasterization\RectangleExtensions.cs" />
     <Compile Include="Views\DropView.cs" />
     <Compile Include="Views\WebView.cs" />
   </ItemGroup>
