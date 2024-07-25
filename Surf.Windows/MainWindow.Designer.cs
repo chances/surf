@@ -1,6 +1,6 @@
-namespace Surf
+namespace Surf.Windows
 {
-    partial class MainWindow
+    public partial class MainWindow
     {
         /// <summary>
         ///  Required designer variable.
@@ -43,4 +43,3 @@ namespace Surf
 
     }
 }
-

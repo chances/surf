@@ -102,18 +102,19 @@
       <Name>xavierHTML</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup Condition="'$(IsWindows)'=='true'">
+    <ProjectReference Include="..\Surf.Windows\Surf.Windows.csproj">
+      <Project>{5C3D7A98-CDB1-454E-A4D2-49388A659EA7}</Project>
+      <Name>Surf.Windows</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
-    <!-- See https://stackoverflow.com/a/51962412/1363247 -->
-    <!-- <EmbeddedResource Include="Resources.resx" /> -->
-    <EmbeddedResource Include="**\*.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <Compile Include="Rasterization\ColorExtensions.cs" />
     <Compile Include="Rasterization\DisplayCommand.cs" />
     <Compile Include="Rasterization\DisplayList.cs" />
     <Compile Include="Rasterization\RectangleExtensions.cs" />
   </ItemGroup>
-  
+
   <!-- OS-specific configurations -->
   <!-- See https://learn.microsoft.com/en-us/visualstudio/msbuild/property-functions?view=vs-2022#msbuild-property-functions -->
   <!-- See https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.osplatform?view=net-8.0#properties -->
@@ -121,7 +122,6 @@
   <ItemGroup Condition="'$(IsWindows)'=='true'">
     <Compile Include="Program.Windows.cs" />
     <Compile Include="MainWindow.cs" />
-    <Compile Include="MainWindow.Designer.cs" />
   </ItemGroup>
   <!-- Linux -->
   <ItemGroup Condition="'$(IsLinux)'=='true'">
